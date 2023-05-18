@@ -4,17 +4,17 @@ El objetivo de este proyecto, es desarrollar un juego en C++ que simula una carr
 
 ## Table of contents
 
-- [Descripción General](#overview)
+- [Descripción General](#descripción-general)
   - [El reto](#el-reto)
-  - [Screenshot](#screenshot)
+  - [Screenshots](#screenshots)
 - [Nuestro Proceso](#nuestro-proceso)
   - [Herramientas usadas](#herramientas-usadas)
-  - [What we learned](#what-i-learned)
+  - [Que se aprendio](#que-se-aprendio)
   - [Continued development](#continued-development)
   - [Useful resources](#useful-resources)
 - [Autores](#autores)
 
-## Descripción
+## Descripción general
 
 El juego consiste en definir una serie de vehículos que competirán en una carrera simulada, el objetivo es determinar qué vehículo es el ganador, mediante una apuesta. Esta carrera  se simulará con símbolos que se moverán en la pantalla.
 
@@ -33,7 +33,7 @@ Users should be able to:
 - See hover and focus states for all interactive elements on the page
 - **Bonus**: See the age numbers animate to their final number when the form is submitted
 
-### Screenshot
+### Screenshots
 
 ![](./screenshot.jpg)
 
@@ -51,7 +51,7 @@ Then crop/optimize/edit your image however you like, add it to your project, and
 
 - C++
 
-### What I learned
+### Que se aprendio
 
 Use this section to recap over some of your major learnings while working through this project. Writing these out and providing code samples of areas you want to highlight is a great way to reinforce your own knowledge.
 
