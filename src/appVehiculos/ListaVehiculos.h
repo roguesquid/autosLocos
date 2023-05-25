@@ -5,7 +5,7 @@
 using namespace std;
 
 // Definición de la estructura de un vehículo
-typedef struct vehiculo
+typedef struct tVehiculo
 {
   string nombreEspanol;
   string nombreIngles;
@@ -14,10 +14,19 @@ typedef struct vehiculo
   string tamanoDelCaucho;
   string velocidad;
   int tiempoDeDisminucionVelocidad;
-  struct vehiculo *prox;
+  struct tVehiculo *prox;
 } tVehiculo;
 
 typedef tVehiculo *tVehiculoPtr;
+
+void generarLogo()
+{
+  cout << "" << endl;
+  cout << "\t\t   ___       __           __                   " << endl;
+  cout << "\t\t  / _ |__ __/ /____  ___ / /  ___  _______  ___" << endl;
+  cout << "\t\t / __ / // / __/ _ \\(_-</ /__/ _ \\/ __/ _ \\(_-<" << endl;
+  cout << "\t\t/_/ |_\\_,_/\\__/\\___/___/____/\\___/\\__/\\___/___/" << endl;
+}
 
 /**
  * Crea un nuevo nodo de vehículo con los valores proporcionados.
@@ -31,18 +40,69 @@ typedef tVehiculo *tVehiculoPtr;
  * @param tiempoDeDisminucionVelocidad: Tiempo de disminución de velocidad del vehículo.
  * @return Un puntero al nuevo nodo de vehículo creado.
  */
-tVehiculoPtr crearNodoVehiculo(string nombreEspanol, string nombreIngles, string nombreConductores, string tipoCaucho, string tamanoDelCaucho, string velocidad, int tiempoDeDisminucionVelocidad)
+tVehiculoPtr crearNodoVehiculo(tVehiculo temporal)
 {
   tVehiculoPtr nodo = new tVehiculo;
-  nodo->nombreEspanol = nombreEspanol;
-  nodo->nombreIngles = nombreIngles;
-  nodo->nombreConductores = nombreConductores;
-  nodo->tipoCaucho = tipoCaucho;
-  nodo->tamanoDelCaucho = tamanoDelCaucho;
-  nodo->velocidad = velocidad;
-  nodo->tiempoDeDisminucionVelocidad = tiempoDeDisminucionVelocidad;
+  nodo->nombreEspanol = temporal.nombreEspanol;
+  nodo->nombreIngles = temporal.nombreIngles;
+  nodo->nombreConductores = temporal.nombreConductores;
+  nodo->tipoCaucho = temporal.tipoCaucho;
+  nodo->tamanoDelCaucho = temporal.tamanoDelCaucho;
   nodo->prox = NULL;
   return nodo;
+}
+
+bool verificarNombre(tVehiculoPtr lista, string nombreEspanolVehiculo)
+{
+  if (lista)
+  {
+    tVehiculoPtr aux = lista;
+    while (aux != NULL)
+    {
+      if (aux->nombreEspanol == nombreEspanolVehiculo)
+      {
+        return true;
+      }
+      aux = aux->prox;
+    }
+  }
+  return false;
+}
+
+void mostrarVehiculo(tVehiculoPtr lista, tVehiculoPtr nodo)
+{
+  system("cls"); // Limpia la pantalla
+
+  // Imprime el encabezado del menú
+  generarLogo();
+  cout << "\n\n\t\t\tINFORMACION DEL VEHICULO" << endl;
+  cout << "\t\t\t-------------------------" << endl;
+
+  cout << "\n\tNombre Vehiculo en espanol: " << nodo->nombreEspanol << endl;
+  cout << "\tNombre Vehiculo en ingles: " << nodo->nombreIngles << endl;
+  cout << "\tConductor/es: " << nodo->nombreConductores << endl;
+  cout << "\tTipo de caucho: " << nodo->tipoCaucho << endl;
+  cout << "\tTamaño del caucho: " << nodo->tamanoDelCaucho << endl;
+  cout << "\tVelocidad: " << nodo->velocidad << endl;
+  cout << "\tResistencia: " << nodo->tiempoDeDisminucionVelocidad << endl;
+  system("pause");
+}
+
+tVehiculoPtr buscarVehiculo(tVehiculoPtr lista, string nombreEspanolVehiculo)
+{
+  if (lista)
+  {
+    tVehiculoPtr aux = lista;
+    while (aux != NULL)
+    {
+      if (aux->nombreEspanol == nombreEspanolVehiculo)
+      {
+        return aux;
+      }
+      aux = aux->prox;
+    }
+  }
+  return NULL;
 }
 
 /**
@@ -50,16 +110,15 @@ tVehiculoPtr crearNodoVehiculo(string nombreEspanol, string nombreIngles, string
  *
  * @param lista: Puntero al puntero inicial de la lista.
  * @param nodo: Puntero al nodo de vehículo a agregar.
- * @return El puntero al nodo de vehículo agregado, que ahora es el nuevo primer nodo de la lista.
  */
-tVehiculoPtr agregarNodoVehiculo(tVehiculoPtr *lista, tVehiculoPtr nodo)
+void agregarNodoVehiculo(tVehiculoPtr *lista, tVehiculoPtr nodo)
 {
   if (*lista != NULL)
   {
     nodo->prox = *lista;
   }
   *lista = nodo;
-  return (*lista);
+  mostrarVehiculo(*lista, nodo);
   // Falta actualizar el archivo cuando se agregue un nuevo vehiculo
 }
 

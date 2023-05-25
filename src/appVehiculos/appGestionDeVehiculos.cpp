@@ -5,8 +5,32 @@
 
 using namespace std;
 
+void menuAgregar(tVehiculoPtr *lista)
+{
+  system("cls"); // Limpia la pantalla
+  tVehiculo temporal;
+
+  // Imprime el encabezado del menú
+  generarLogo();
+  cout << "\n\n\t\t\tMENU AGREGAR VEHICULO" << endl;
+  cout << "\t\t\t-------------------------" << endl;
+
+  cout << "\n\tIngrese el nombre del vehiculo en espanol: ";
+  cin >> temporal.nombreEspanol;
+  cout << "\n\tIngrese el nombre del vehiculo en ingles: ";
+  cin >> temporal.nombreIngles;
+  cout << "\n\tIngrese el nombre del/los conductor/es: ";
+  cin >> temporal.nombreConductores;
+  cout << "\n\tIngrese el tipo de caucho: ";
+  cin >> temporal.tipoCaucho;
+  cout << "\n\tIngrese el tamaño del caucho: ";
+  cin >> temporal.tamanoDelCaucho;
+
+  agregarNodoVehiculo(lista, crearNodoVehiculo(temporal));
+}
+
 // Función para mostrar el menú de gestión de vehículos
-void menuGestionDeVehiculos()
+void menuGestionDeVehiculos(tVehiculoPtr *lista)
 {
   int opcion;
   bool repetir = true;
@@ -16,11 +40,7 @@ void menuGestionDeVehiculos()
     system("cls"); // Limpia la pantalla
 
     // Imprime el encabezado del menú
-    cout << "" << endl;
-    cout << "\t   ___       __           __                   " << endl;
-    cout << "\t  / _ |__ __/ /____  ___ / /  ___  _______  ___" << endl;
-    cout << "\t / __ / // / __/ _ \\(_-</ /__/ _ \\/ __/ _ \\(_-<" << endl;
-    cout << "\t/_/ |_\\_,_/\\__/\\___/___/____/\\___/\\__/\\___/___/" << endl;
+    generarLogo();
     cout << "\n\n\t\t\tMENU GESTION DE VEHICULOS" << endl;
     cout << "\t\t\t-------------------------" << endl;
     cout << "\n\t1. Agregar vehiculo" << endl;
@@ -37,6 +57,7 @@ void menuGestionDeVehiculos()
     {
     case 1:
       // Agregar vehiculo: implementa la lógica para agregar un vehículo
+      menuAgregar(lista);
       break;
 
     case 2:
@@ -64,5 +85,6 @@ void menuGestionDeVehiculos()
 
 int main()
 {
-  menuGestionDeVehiculos(); // Llama a la función principal para mostrar el menú de gestión de vehículos
+  tVehiculoPtr listaVehiculos = NULL;
+  menuGestionDeVehiculos(&listaVehiculos); // Llama a la función principal para mostrar el menú de gestión de vehículos
 }
