@@ -5,6 +5,11 @@
 
 using namespace std;
 
+/**
+ * Agrega un nuevo vehículo a la lista de vehículos.
+ *
+ * @param lista: Puntero a un puntero al inicio de la lista de vehículos.
+ */
 void menuAgregar(tVehiculoPtr *lista)
 {
   system("cls"); // Limpia la pantalla
@@ -15,21 +20,48 @@ void menuAgregar(tVehiculoPtr *lista)
   cout << "\n\n\t\t\tMENU AGREGAR VEHICULO" << endl;
   cout << "\t\t\t-------------------------" << endl;
 
+  cin.ignore();
   cout << "\n\tIngrese el nombre del vehiculo en espanol: ";
-  cin >> temporal.nombreEspanol;
+  getline(cin, temporal.nombreEspanol);
   cout << "\n\tIngrese el nombre del vehiculo en ingles: ";
-  cin >> temporal.nombreIngles;
+  getline(cin, temporal.nombreIngles);
   cout << "\n\tIngrese el nombre del/los conductor/es: ";
-  cin >> temporal.nombreConductores;
+  getline(cin, temporal.nombreConductores);
   cout << "\n\tIngrese el tipo de caucho: ";
-  cin >> temporal.tipoCaucho;
-  cout << "\n\tIngrese el tamaño del caucho: ";
-  cin >> temporal.tamanoDelCaucho;
+  getline(cin, temporal.tipoCaucho);
+  cout << "\n\tIngrese el tamano del caucho: ";
+  getline(cin, temporal.tamanoDelCaucho);
 
   agregarNodoVehiculo(lista, crearNodoVehiculo(temporal));
+
+  // Informacion del vehiculo
+  system("cls");
+  cout << "\n\n\t\t\tINFORMACION DEL VEHICULO" << endl;
+  cout << "\t\t\t-------------------------" << endl;
+  mostrarVehiculo(*lista, *lista);
+  system("pause");
 }
 
-// Función para mostrar el menú de gestión de vehículos
+/**
+ * Muestra en pantalla la lista de vehículos.
+ *
+ * @param lista: Puntero a la lista de vehículos.
+ */
+void menuListar(tVehiculoPtr lista)
+{
+  system("cls"); // Limpia la pantalla
+  generarLogo(); // Muestra el logo del programa
+  cout << "\n\n\t\t\t\tLISTAR VEHICULOS" << endl;
+  cout << "\t\t\t-------------------------" << endl;
+  cout << "\n\n";
+  listarVehiculos(lista); // Llama a la función listarVehiculos para mostrar la lista de vehículos
+}
+
+/**
+ * Muestra el menú de gestión de vehículos y permite al usuario realizar operaciones.
+ *
+ * @param lista: Puntero a la lista de vehículos.
+ */
 void menuGestionDeVehiculos(tVehiculoPtr *lista)
 {
   int opcion;
@@ -38,9 +70,7 @@ void menuGestionDeVehiculos(tVehiculoPtr *lista)
   do
   {
     system("cls"); // Limpia la pantalla
-
-    // Imprime el encabezado del menú
-    generarLogo();
+    generarLogo(); // Muestra el logo del programa
     cout << "\n\n\t\t\tMENU GESTION DE VEHICULOS" << endl;
     cout << "\t\t\t-------------------------" << endl;
     cout << "\n\t1. Agregar vehiculo" << endl;
@@ -74,6 +104,7 @@ void menuGestionDeVehiculos(tVehiculoPtr *lista)
 
     case 5:
       // Listar vehiculos: implementa la lógica para mostrar una lista de vehículos
+      menuListar(*lista);
       break;
 
     case 0:

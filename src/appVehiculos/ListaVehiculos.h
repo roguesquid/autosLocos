@@ -19,6 +19,11 @@ typedef struct tVehiculo
 
 typedef tVehiculo *tVehiculoPtr;
 
+/**
+ * Genera y muestra un logotipo en la salida estándar.
+ * El logotipo consiste en una representación gráfica de texto.
+ * con base en caracteres ASCII
+ */
 void generarLogo()
 {
   cout << "" << endl;
@@ -31,63 +36,90 @@ void generarLogo()
 /**
  * Crea un nuevo nodo de vehículo con los valores proporcionados.
  *
- * @param nombreEspanol: Nombre del vehículo en español.
- * @param nombreIngles: Nombre del vehículo en inglés.
- * @param nombreConductores: Nombre del conductor del vehículo.
- * @param tipoCaucho: Tipo de caucho utilizado en el vehículo.
- * @param tamanoDelCaucho: Tamaño del caucho utilizado en el vehículo.
- * @param velocidad: Velocidad del vehículo.
- * @param tiempoDeDisminucionVelocidad: Tiempo de disminución de velocidad del vehículo.
+ * @param temporal: Objeto temporal que contiene los datos del vehículo.
  * @return Un puntero al nuevo nodo de vehículo creado.
  */
 tVehiculoPtr crearNodoVehiculo(tVehiculo temporal)
 {
-  tVehiculoPtr nodo = new tVehiculo;
-  nodo->nombreEspanol = temporal.nombreEspanol;
-  nodo->nombreIngles = temporal.nombreIngles;
-  nodo->nombreConductores = temporal.nombreConductores;
-  nodo->tipoCaucho = temporal.tipoCaucho;
-  nodo->tamanoDelCaucho = temporal.tamanoDelCaucho;
-  nodo->prox = NULL;
-  return nodo;
+  tVehiculoPtr nodo = new tVehiculo;                    // Crea un nuevo nodo de vehículo en memoria
+  nodo->nombreEspanol = temporal.nombreEspanol;         // Asigna el nombre en español al nodo
+  nodo->nombreIngles = temporal.nombreIngles;           // Asigna el nombre en inglés al nodo
+  nodo->nombreConductores = temporal.nombreConductores; // Asigna el nombre del conductor al nodo
+  nodo->tipoCaucho = temporal.tipoCaucho;               // Asigna el tipo de caucho al nodo
+  nodo->tamanoDelCaucho = temporal.tamanoDelCaucho;     // Asigna el tamaño del caucho al nodo
+  nodo->prox = NULL;                                    // Establece el puntero "prox" del nodo como NULL (sin siguiente nodo)
+
+  return nodo; // Devuelve el puntero al nuevo nodo de vehículo creado
 }
 
+/**
+ * Verifica si un nombre de vehículo en español dado existe en la lista de vehículos.
+ *
+ * @param lista: Puntero al primer nodo de la lista de vehículos.
+ * @param nombreEspanolVehiculo: Nombre del vehículo en español a verificar.
+ * @return true si el nombre de vehículo existe en la lista, false en caso contrario.
+ */
 bool verificarNombre(tVehiculoPtr lista, string nombreEspanolVehiculo)
 {
   if (lista)
   {
-    tVehiculoPtr aux = lista;
+    tVehiculoPtr aux = lista; // Crea un puntero auxiliar y lo inicializa con el primer nodo de la lista
+
     while (aux != NULL)
     {
-      if (aux->nombreEspanol == nombreEspanolVehiculo)
+      if (aux->nombreEspanol == nombreEspanolVehiculo) // Compara el nombre de vehículo en español con el nombre proporcionado
       {
-        return true;
+        return true; // El nombre de vehículo existe en la lista, se devuelve true
       }
-      aux = aux->prox;
+      aux = aux->prox; // Avanza al siguiente nodo de la lista
     }
   }
-  return false;
+
+  return false; // El nombre de vehículo no se encontró en la lista, se devuelve false
 }
 
+/**
+ * Muestra la información de un vehículo en la salida estándar.
+ *
+ * @param lista: Puntero al inicio de la lista de vehículos.
+ * @param nodo: Puntero al nodo de vehículo que se desea mostrar.
+ */
 void mostrarVehiculo(tVehiculoPtr lista, tVehiculoPtr nodo)
 {
-  system("cls"); // Limpia la pantalla
-
-  // Imprime el encabezado del menú
-  generarLogo();
-  cout << "\n\n\t\t\tINFORMACION DEL VEHICULO" << endl;
-  cout << "\t\t\t-------------------------" << endl;
-
-  cout << "\n\tNombre Vehiculo en espanol: " << nodo->nombreEspanol << endl;
+  cout << "\n\t" << nodo->nombreEspanol << endl;
+  cout << "\n";
   cout << "\tNombre Vehiculo en ingles: " << nodo->nombreIngles << endl;
   cout << "\tConductor/es: " << nodo->nombreConductores << endl;
   cout << "\tTipo de caucho: " << nodo->tipoCaucho << endl;
-  cout << "\tTamaño del caucho: " << nodo->tamanoDelCaucho << endl;
+  cout << "\tTamano del caucho: " << nodo->tamanoDelCaucho << endl;
   cout << "\tVelocidad: " << nodo->velocidad << endl;
   cout << "\tResistencia: " << nodo->tiempoDeDisminucionVelocidad << endl;
+  cout << "\n";
+}
+
+/**
+ * Muestra la información de todos los vehículos en la lista en la salida estándar.
+ *
+ * @param lista: Puntero al inicio de la lista de vehículos.
+ */
+void listarVehiculos(tVehiculoPtr lista)
+{
+  tVehiculoPtr aux = lista;
+  while (aux != NULL)
+  {
+    mostrarVehiculo(lista, aux);
+    aux = aux->prox;
+  }
   system("pause");
 }
 
+/**
+ * Busca un vehículo en la lista por su nombre en español y devuelve un puntero al nodo del vehículo encontrado.
+ *
+ * @param lista: Puntero al inicio de la lista de vehículos.
+ * @param nombreEspanolVehiculo: Nombre del vehículo en español a buscar.
+ * @return Puntero al nodo del vehículo encontrado o NULL si no se encuentra.
+ */
 tVehiculoPtr buscarVehiculo(tVehiculoPtr lista, string nombreEspanolVehiculo)
 {
   if (lista)
@@ -118,7 +150,6 @@ void agregarNodoVehiculo(tVehiculoPtr *lista, tVehiculoPtr nodo)
     nodo->prox = *lista;
   }
   *lista = nodo;
-  mostrarVehiculo(*lista, nodo);
   // Falta actualizar el archivo cuando se agregue un nuevo vehiculo
 }
 
