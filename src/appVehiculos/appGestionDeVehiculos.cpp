@@ -12,25 +12,42 @@ using namespace std;
  */
 void menuAgregar(tVehiculoPtr *lista)
 {
-  system("cls"); // Limpia la pantalla
   tVehiculo temporal;
-
-  // Imprime el encabezado del menú
-  generarLogo();
-  cout << "\n\n\t\t\tMENU AGREGAR VEHICULO" << endl;
-  cout << "\t\t\t-------------------------" << endl;
+  bool repetir = true;
 
   cin.ignore();
-  cout << "\n\tIngrese el nombre del vehiculo en espanol: ";
-  getline(cin, temporal.nombreEspanol);
-  cout << "\n\tIngrese el nombre del vehiculo en ingles: ";
-  getline(cin, temporal.nombreIngles);
-  cout << "\n\tIngrese el nombre del/los conductor/es: ";
-  getline(cin, temporal.nombreConductores);
-  cout << "\n\tIngrese el tipo de caucho: ";
-  getline(cin, temporal.tipoCaucho);
-  cout << "\n\tIngrese el tamano del caucho: ";
-  getline(cin, temporal.tamanoDelCaucho);
+  while (repetir)
+  {
+    system("cls"); // Limpia la pantalla
+    // Imprime el encabezado del menú
+    generarLogo();
+    cout << "\n\n\t\t\tMENU AGREGAR VEHICULO" << endl;
+    cout << "\t\t\t-------------------------" << endl;
+
+    cout << "\n\tIngrese el nombre del vehiculo en espanol: ";
+    getline(cin, temporal.nombreEspanol);
+    cout << "\n\tIngrese el nombre del vehiculo en ingles: ";
+    getline(cin, temporal.nombreIngles);
+    cout << "\n\tIngrese el nombre del/los conductor/es: ";
+    getline(cin, temporal.nombreConductores);
+    cout << "\n\tIngrese el tipo de caucho: ";
+    getline(cin, temporal.tipoCaucho);
+    cout << "\n\tIngrese el tamano del caucho: ";
+    getline(cin, temporal.tamanoDelCaucho);
+
+    // validacion de los datos ingresados
+    bool datosValidos = !existeNombre(*lista, temporal.nombreEspanol);
+    if (datosValidos)
+    {
+      repetir = false;
+    }
+    else
+    {
+      cout << "\n\tLos Datos ingresados son invalidos, ingreselos nuevamente" << endl;
+      cout << "\tPresione Enter para continuar...";
+      cin.get();
+    }
+  }
 
   agregarNodoVehiculo(lista, crearNodoVehiculo(temporal));
 
@@ -39,7 +56,86 @@ void menuAgregar(tVehiculoPtr *lista)
   cout << "\n\n\t\t\tINFORMACION DEL VEHICULO" << endl;
   cout << "\t\t\t-------------------------" << endl;
   mostrarVehiculo(*lista, *lista);
-  system("pause");
+  cout << "\tPresione Enter para continuar...";
+  cin.get();
+}
+
+/*
+void menuModificar(tVehiculoPtr lista)
+{
+  string nombre;
+  bool repetir = true;
+
+  cin.ignore();
+  while (repetir)
+  {
+    system("cls");
+    generarLogo();
+    cout << "\n\n\t\t\tMENU MODIFICAR VEHICULO" << endl;
+    cout << "\t\t\t-------------------------" << endl;
+
+    cout << "\n\tIngrese el nombre del vehiculo a modificar: ";
+    getline(cin, nombre);
+
+    if (existeNombre(lista, nombre))
+    {
+      repetir = false;
+    }
+    else
+    {
+      cout << "\nVehiculo no encontrado" << endl;
+      cout << "Presione Enter para continuar...";
+      cin.get();
+    }
+
+  }
+}*/
+
+/**
+ * Elimina un vehículo de la lista enlazada.
+ * Muestra el vehiculo luego de ser eliminado.
+ *
+ * @param lista Puntero a la lista enlazada de vehículos.
+ */
+void menuEliminarVehiculo(tVehiculoPtr *lista)
+{
+  string nombre;
+  bool repetir = true;
+  cin.ignore();
+
+  while (repetir)
+  {
+    system("cls");
+    generarLogo();
+    cout << "\n\n\t\t\tMENU ELIMINAR VEHICULO" << endl;
+    cout << "\t\t\t-------------------------" << endl;
+
+    cout << "\n\tIngrese el nombre del vehiculo a eliminar: ";
+    getline(cin, nombre);
+
+    if (existeNombre(*lista, nombre))
+    {
+      repetir = false;
+    }
+    else
+    {
+      cout << "\n\tVehiculo no encontrado" << endl;
+      cout << "\tPresione Enter para continuar...";
+      cin.get();
+    }
+  }
+
+  // Elimina el vehiculo
+  tVehiculoPtr nodoAEliminar = buscarVehiculo(*lista, nombre);
+  tVehiculo aux = *nodoAEliminar;             // guardo en una variable estatica el nodo que voy a eliminar
+  eliminarNodoVehiculo(lista, nodoAEliminar); // elimino el vehiculo
+
+  system("cls"); // limpio la pantalla
+  generarLogo(); // genero el logo
+  cout << "\n\n\tVehiculo eliminado con exito" << endl;
+  mostrarVehiculo(*lista, &aux); // muestro el vehiculo eliminado
+  cout << "\t\nPresione Enter para continuar...";
+  cin.get();
 }
 
 /**
@@ -64,7 +160,7 @@ void menuListar(tVehiculoPtr lista)
  */
 void menuGestionDeVehiculos(tVehiculoPtr *lista)
 {
-  int opcion;
+  string opcion;
   bool repetir = true;
 
   do
@@ -83,33 +179,34 @@ void menuGestionDeVehiculos(tVehiculoPtr *lista)
     cout << "\n\tIngrese una opcion: ";
     cin >> opcion;
 
-    switch (opcion)
+    // Implemento un if/else ya que el switch no puede comparar strings
+    if (opcion == "1")
     {
-    case 1:
       // Agregar vehiculo: implementa la lógica para agregar un vehículo
       menuAgregar(lista);
-      break;
-
-    case 2:
+    }
+    else if (opcion == "2")
+    {
       // Modificar vehiculo: implementa la lógica para modificar un vehículo existente
-      break;
-
-    case 3:
+      // menuModificar(*lista);
+    }
+    else if (opcion == "3")
+    {
       // Eliminar vehiculo: implementa la lógica para eliminar un vehículo existente
-      break;
-
-    case 4:
+      menuEliminarVehiculo(lista);
+    }
+    else if (opcion == "4")
+    {
       // Consultar vehiculo: implementa la lógica para consultar la información de un vehículo
-      break;
-
-    case 5:
+    }
+    else if (opcion == "5")
+    {
       // Listar vehiculos: implementa la lógica para mostrar una lista de vehículos
       menuListar(*lista);
-      break;
-
-    case 0:
+    }
+    else if (opcion == "0")
+    {
       repetir = false; // Termina el ciclo y sale del programa
-      break;
     }
   } while (repetir);
 }
