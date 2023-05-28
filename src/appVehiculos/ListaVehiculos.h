@@ -225,3 +225,75 @@ void eliminarNodoVehiculo(tVehiculoPtr *lista, tVehiculoPtr nodo)
     }
   }
 }
+
+/**
+ * Muestra los nombres en español de los vehículos de una lista enlazada.
+ * @param lista Puntero al primer nodo de la lista.
+ */
+void listarNombres(tVehiculoPtr lista)
+{
+  tVehiculoPtr aux = lista; // Puntero auxiliar para recorrer la lista
+  int i = 1;                // Contador de índice
+
+  while (aux != NULL)
+  {
+    cout << "\t" << i << ". " << aux->nombreEspanol << endl; // Muestra el número de índice y el nombre en español
+    aux = aux->prox;                                         // Avanza al siguiente nodo de la lista
+    i++;                                                     // Incrementa el contador de índice
+  }
+}
+
+/**
+ * Obtiene el nodo de una lista enlazada en una posición específica.
+ *
+ * @param lista El puntero al primer nodo de la lista enlazada.
+ * @param posicion La posición del nodo a obtener.
+ * @return El apuntador al nodo en la posición deseada, o NULL si no se encuentra.
+ */
+tVehiculoPtr obtenerNodoPorPosicion(tVehiculoPtr lista, int posicion)
+{
+  if (lista == NULL)
+  {
+    return NULL; // La lista está vacía
+  }
+
+  tVehiculoPtr aux = lista;
+  int contador = 1;
+
+  while (aux != NULL)
+  {
+    if (contador == posicion)
+    {
+      return aux; // Se encontró el nodo en la posición deseada
+    }
+    contador++;
+    aux = aux->prox;
+  }
+
+  return NULL; // No se encontró el nodo en la posición deseada
+}
+
+/**
+ * Cuenta la cantidad de nodos en una lista enlazada.
+ *
+ * @param lista El puntero al primer nodo de la lista enlazada.
+ * @return El número de nodos en la lista.
+ */
+int contarNodos(tVehiculoPtr lista)
+{
+  if (lista == NULL)
+  {
+    return 0; // La lista está vacía
+  }
+
+  tVehiculoPtr aux = lista;
+  int contador = 0;
+
+  while (aux != NULL)
+  {
+    aux = aux->prox;
+    contador++;
+  }
+
+  return contador; // Retorna el número de nodos en la lista
+}

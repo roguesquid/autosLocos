@@ -1,9 +1,25 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <regex>
 #include "ListaVehiculos.h"
 
 using namespace std;
+
+/**
+ * Comprueba si un string de un solo carácter es numérico.
+ *
+ * @param str El string que se desea comprobar.
+ * @return true si el string es numérico, false en caso contrario.
+ */
+bool esCaracterNumerico(const std::string &str)
+{
+  // Expresión regular para verificar si el string es numérico
+  std::regex regex("\\d");
+
+  // Comprobar si el string tiene exactamente un carácter y si coincide con la expresión regular
+  return std::regex_match(str, regex);
+}
 
 /**
  * Agrega un nuevo vehículo a la lista de vehículos.
@@ -51,11 +67,12 @@ void menuAgregar(tVehiculoPtr *lista)
 
   agregarNodoVehiculo(lista, crearNodoVehiculo(temporal));
 
-  // Informacion del vehiculo
+  // Mostrar Informacion del vehiculo agregado
   system("cls");
   cout << "\n\n\t\t\tINFORMACION DEL VEHICULO" << endl;
   cout << "\t\t\t-------------------------" << endl;
   mostrarVehiculo(*lista, *lista);
+  cout << "\n\n\tVehiculo agregado con exito" << endl;
   cout << "\tPresione Enter para continuar...";
   cin.get();
 }
@@ -130,10 +147,64 @@ void menuEliminarVehiculo(tVehiculoPtr *lista)
   tVehiculo aux = *nodoAEliminar;             // guardo en una variable estatica el nodo que voy a eliminar
   eliminarNodoVehiculo(lista, nodoAEliminar); // elimino el vehiculo
 
+  // Muestra el vehiculo eliminado
   system("cls"); // limpio la pantalla
   generarLogo(); // genero el logo
   cout << "\n\n\tVehiculo eliminado con exito" << endl;
   mostrarVehiculo(*lista, &aux); // muestro el vehiculo eliminado
+  cout << "\t\nPresione Enter para continuar...";
+  cin.get();
+}
+
+/**
+ * Verifica si una opción ingresada por el usuario es válida.
+ * @param lista Puntero al primer nodo de la lista de vehículos.
+ * @param opcion Opción ingresada por el usuario.
+ * @return Devuelve true si la opción es válida, de lo contrario, devuelve false.
+ */
+bool opcionValida(tVehiculoPtr lista, string opcion)
+{
+  if (esCaracterNumerico(opcion))
+  {
+    bool rangoValido = stoi(opcion) <= contarNodos(lista); // Convierte el string a entero y verifica si está dentro del rango válido
+    if (rangoValido)
+    {
+      return true; // La opción es válida
+    }
+  }
+
+  return false; // La opción no es válida
+}
+
+/**
+ * Muestra un menú para consultar un vehículo de una lista enlazada.
+ * @param lista Puntero al primer nodo de la lista de vehículos.
+ */
+void menuConsultar(tVehiculoPtr lista)
+{
+  bool repetir = true;
+  string opcion;
+
+  do
+  {
+    system("cls");
+    generarLogo();
+    cout << "\n\n\t\t\tCONSULTAR VEHICULO" << endl;
+    cout << "\t\t\t------------------" << endl;
+    listarNombres(lista);
+    cout << "\n\tIngrese una opcion: ";
+    cin >> opcion;
+
+    if (opcionValida(lista, opcion))
+    {
+      repetir = false;
+    }
+  } while (repetir);
+
+  cin.ignore(); // Descartar el carácter de nueva línea pendiente
+  int opcionInt = stoi(opcion);
+  tVehiculoPtr vehiculo = obtenerNodoPorPosicion(lista, opcionInt);
+  mostrarVehiculo(lista, vehiculo);
   cout << "\t\nPresione Enter para continuar...";
   cin.get();
 }
@@ -198,6 +269,7 @@ void menuGestionDeVehiculos(tVehiculoPtr *lista)
     else if (opcion == "4")
     {
       // Consultar vehiculo: implementa la lógica para consultar la información de un vehículo
+      menuConsultar(*lista);
     }
     else if (opcion == "5")
     {
