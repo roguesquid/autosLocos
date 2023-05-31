@@ -7,39 +7,43 @@
 using namespace std;
 
 tVehiculoPtr listaAutos = NULL;
-tVehiculoPtr ultimo = NULL;
+tVehiculoPtr ultimoVehiculo = NULL;
 
-tVehiculoPtr extraerDatos(){
+tVehiculoPtr llenarNodo(tVehiculoPtr nuevoVehiculo){
     ifstream archivo("Autos.txt");
-    tVehiculoPtr listaVehiculos = NULL;
-    tVehiculoPtr ultimoVehiculo = NULL;
+    string linea;
     while (!archivo.eof()){
-        string linea;
         getline(archivo, linea);
         if (linea != "|"){
-            tVehiculoPtr nuevoVehiculo = new tVehiculo;
             istringstream ss(linea);
             ss >> nuevoVehiculo->nombreEspanol >> nuevoVehiculo->nombreIngles >>
             nuevoVehiculo->nombreConductores >> nuevoVehiculo->tipoCaucho >>
             nuevoVehiculo->tamanoDelCaucho >> nuevoVehiculo->velocidad >>
             nuevoVehiculo->tiempoDeDisminucionVelocidad >> nuevoVehiculo->simbolo;
             nuevoVehiculo->prox = NULL;
-            if (listaVehiculos == NULL){
-                listaVehiculos = nuevoVehiculo;
-            } else {
-                ultimoVehiculo->prox = nuevoVehiculo;
-            }
-            ultimoVehiculo = nuevoVehiculo;
         }
     }
     archivo.close();
-    return listaVehiculos;
+    return nuevoVehiculo;
 } 
 
+tVehiculoPtr crearListaAutos(){
+    ifstream archivo("Autos.txt");
+    while (!archivo.eof()){
+        tVehiculoPtr nuevoVehiculo = new tVehiculo;
+        nuevoVehiculo = llenarNodo(nuevoVehiculo);
+        if (listaAutos == NULL){
+            listaAutos = nuevoVehiculo;
+            ultimoVehiculo = nuevoVehiculo;
+        } else {
+            ultimoVehiculo->prox = nuevoVehiculo;
+        }
+}
+}
+
 int main(){
-    tVehiculoPtr listaVehiculos = extraerDatos();
+    tVehiculoPtr listaVehiculos = crearListaAutos();
     if (listaVehiculos != NULL){
-        cout << listaVehiculos->nombreEspanol << endl;
         tVehiculoPtr nodo = listaVehiculos;
         while (nodo != NULL){
             cout <<nodo->nombreEspanol << endl;
@@ -52,6 +56,7 @@ int main(){
             cout << nodo->simbolo << endl;
             nodo = nodo->prox;
         }
+        nodo = nodo->prox;
     }
     else {
         cout << "La lista de vehiculos esta vacia" << endl;
