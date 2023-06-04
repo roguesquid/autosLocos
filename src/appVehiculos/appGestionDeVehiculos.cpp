@@ -289,7 +289,7 @@ void leerVelocidad(string tamanoCaucho, string *velocidad)
  *
  * @param lista: Puntero a un puntero al inicio de la lista de vehículos.
  */
-void menuAgregar(tVehiculoPtr *lista)
+void agregar(tVehiculoPtr *lista)
 {
   tVehiculo temporal;
 
@@ -327,7 +327,7 @@ bool opcionValida(tVehiculoPtr lista, string opcion)
 {
   if (esCaracterNumerico(opcion))
   {
-    bool rangoValido = stoi(opcion) <= contarNodos(lista); // Convierte el string a entero y verifica si está dentro del rango válido
+    bool rangoValido = (stoi(opcion) <= contarNodos(lista)) && (stoi(opcion) >= 1); // Convierte el string a entero y verifica si está dentro del rango válido
     if (rangoValido)
     {
       return true; // La opción es válida
@@ -338,20 +338,16 @@ bool opcionValida(tVehiculoPtr lista, string opcion)
 }
 
 /**
- * Pide el vehiculo que se desea modificar a traves de un menu de todos los vehiculos disponibles.
+ * Pide un vehiculo a traves de un menu de todos los vehiculos disponibles y realiza todas las comprobaciones.
  * @param lista Puntero al primer nodo de la lista de vehículos.
  * @return Devuelve el apuntador al vehiculo que el usuario selecciono.
  */
-tVehiculoPtr pedirVehiculoAModificar(tVehiculoPtr lista)
+tVehiculoPtr pedirVehiculo(tVehiculoPtr lista)
 {
   string opcion;
   bool repetir = true;
   do
   {
-    system("cls");
-    generarLogo();
-    cout << "\n\n\t\t\tMENU MODIFICAR VEHICULO" << endl;
-    cout << "\t\t\t-----------------------" << endl;
     listarNombres(lista);
     cout << "\n\tIngrese una opcion: ";
     cin >> opcion;
@@ -412,45 +408,57 @@ int pedirCampoAModificar()
  */
 void modificar(tVehiculoPtr lista)
 {
-  // Pedir el vehículo a modificar
-  tVehiculoPtr nodo = pedirVehiculoAModificar(lista);
-
-  // Pedir el campo a modificar
-  int opcion = pedirCampoAModificar();
-
-  switch (opcion)
-  {
-  case 1:
-    // Modificar nombres
-    cin.ignore();
-    leerNombres(lista, &(nodo->nombreEspanol), &(nodo->nombreIngles));
-    break;
-  case 2:
-    // Modificar nombre de conductores
-    leerConductores(&(nodo->nombreConductores));
-    break;
-  case 3:
-    // Modificar tipo de caucho
-    leerTipoCaucho(&(nodo->tipoCaucho));
-    break;
-  case 4:
-    // Modificar tamaño de caucho
-    leerTamanoCaucho(&(nodo->tamanoDelCaucho));
-    leerVelocidad(nodo->tamanoDelCaucho, &(nodo->velocidad));
-    break;
-  case 5:
-    // Modificar tamaño de caucho y velocidad
-    leerTamanoCaucho(&(nodo->tamanoDelCaucho));
-    leerVelocidad(nodo->tamanoDelCaucho, &(nodo->velocidad));
-    break;
-  }
-
-  system("cls"); // Limpia la pantalla de la consola
-  generarLogo(); // Muestra un logo en la consola
+  system("cls");
+  generarLogo();
   cout << "\n\n\t\t\tMENU MODIFICAR VEHICULO" << endl;
-  cout << "\t\t\t-----------------------" << endl;
-  mostrarVehiculo(lista, nodo); // Muestra la información actualizada del vehículo modificado
-  cout << "\n\t Modificacion existosa";
+  cout << "\t\t\t-----------------------\n\n";
+  cin.ignore();
+  if (contarNodos(lista) > 0)
+  { // si existen nodos
+    // Pedir el vehículo a modificar
+    tVehiculoPtr nodo = pedirVehiculo(lista);
+
+    // Pedir el campo a modificar
+    int opcion = pedirCampoAModificar();
+
+    switch (opcion)
+    {
+    case 1:
+      // Modificar nombres
+      cin.ignore();
+      leerNombres(lista, &(nodo->nombreEspanol), &(nodo->nombreIngles));
+      break;
+    case 2:
+      // Modificar nombre de conductores
+      leerConductores(&(nodo->nombreConductores));
+      break;
+    case 3:
+      // Modificar tipo de caucho
+      leerTipoCaucho(&(nodo->tipoCaucho));
+      break;
+    case 4:
+      // Modificar tamaño de caucho
+      leerTamanoCaucho(&(nodo->tamanoDelCaucho));
+      leerVelocidad(nodo->tamanoDelCaucho, &(nodo->velocidad));
+      break;
+    case 5:
+      // Modificar tamaño de caucho y velocidad
+      leerTamanoCaucho(&(nodo->tamanoDelCaucho));
+      leerVelocidad(nodo->tamanoDelCaucho, &(nodo->velocidad));
+      break;
+    }
+
+    system("cls"); // Limpia la pantalla de la consola
+    generarLogo(); // Muestra un logo en la consola
+    cout << "\n\n\t\t\tMENU MODIFICAR VEHICULO" << endl;
+    cout << "\t\t\t-----------------------" << endl;
+    mostrarVehiculo(lista, nodo); // Muestra la información actualizada del vehículo modificado
+    cout << "\n\t Modificacion existosa";
+  }
+  else
+  {
+    cout << "No hay nada que modificar";
+  }
   esperar();
 }
 
@@ -460,78 +468,46 @@ void modificar(tVehiculoPtr lista)
  *
  * @param lista Puntero a la lista enlazada de vehículos.
  */
-void menuEliminarVehiculo(tVehiculoPtr *lista)
+void eliminar(tVehiculoPtr *lista)
 {
-  string nombre;
-  bool repetir = true;
+  system("cls");
+  generarLogo();
+  cout << "\n\n\t\t\tMENU ELIMINAR VEHICULO" << endl;
+  cout << "\t\t\t----------------------\n\n";
   cin.ignore();
-
-  while (repetir)
-  {
-    system("cls");
-    generarLogo();
-    cout << "\n\n\t\t\tMENU ELIMINAR VEHICULO" << endl;
-    cout << "\t\t\t-------------------------" << endl;
-
-    cout << "\n\tIngrese el nombre del vehiculo a eliminar: ";
-    getline(cin, nombre);
-
-    if (existeNombre(*lista, nombre))
-    {
-      repetir = false;
-    }
-    else
-    {
-      cout << "\n\tVehiculo no encontrado" << endl;
-      esperar();
-    }
-  }
-
-  // Elimina el vehiculo
-  tVehiculoPtr nodoAEliminar = buscarVehiculo(*lista, nombre);
+  tVehiculoPtr nodoAEliminar = pedirVehiculo(*lista);
   tVehiculo aux = *nodoAEliminar;             // guardo en una variable estatica el nodo que voy a eliminar
   eliminarNodoVehiculo(lista, nodoAEliminar); // elimino el vehiculo
 
   // Muestra el vehiculo eliminado
   system("cls"); // limpio la pantalla
   generarLogo(); // genero el logo
-  cout << "\n\n\tVehiculo eliminado con exito" << endl;
+  cout << "\n\n\t\t\tMENU ELIMINAR VEHICULO" << endl;
+  cout << "\t\t\t----------------------\n\n";
   mostrarVehiculo(*lista, &aux); // muestro el vehiculo eliminado
-  cout << "\t\nPresione Enter para continuar...";
-  cin.get();
+  cout << "\n\n\tVehiculo eliminado con exito" << endl;
+  esperar();
 }
 
 /**
  * Muestra un menú para consultar un vehículo de una lista enlazada.
  * @param lista Puntero al primer nodo de la lista de vehículos.
  */
-void menuConsultar(tVehiculoPtr lista)
+void consultar(tVehiculoPtr lista)
 {
-  bool repetir = true;
-  string opcion;
+  system("cls");
+  generarLogo();
+  cout << "\n\n\t\t\tCONSULTAR VEHICULO" << endl;
+  cout << "\t\t\t------------------" << endl;
+  cin.ignore();
+  tVehiculoPtr vehiculo = pedirVehiculo(lista);
 
-  do
-  {
-    system("cls");
-    generarLogo();
-    cout << "\n\n\t\t\tCONSULTAR VEHICULO" << endl;
-    cout << "\t\t\t------------------" << endl;
-    listarNombres(lista);
-    cout << "\n\tIngrese una opcion: ";
-    cin >> opcion;
-
-    if (opcionValida(lista, opcion)) // verifica si esta en el rango de nodos y si es numerico
-    {
-      repetir = false;
-    }
-  } while (repetir);
-
-  cin.ignore(); // Descartar el carácter de nueva línea pendiente
-  int opcionInt = stoi(opcion);
-  tVehiculoPtr vehiculo = obtenerNodoPorPosicion(lista, opcionInt);
+  system("cls");
+  generarLogo();
+  cout << "\n\n\t\t\tCONSULTAR VEHICULO" << endl;
+  cout << "\t\t\t------------------" << endl;
   mostrarVehiculo(lista, vehiculo);
-  cout << "\t\nPresione Enter para continuar...";
-  cin.get();
+  esperar();
 }
 
 /**
@@ -539,13 +515,13 @@ void menuConsultar(tVehiculoPtr lista)
  *
  * @param lista: Puntero a la lista de vehículos.
  */
-void menuListar(tVehiculoPtr lista)
+void listar(tVehiculoPtr lista)
 {
   system("cls"); // Limpia la pantalla
   generarLogo(); // Muestra el logo del programa
-  cout << "\n\n\t\t\t\tLISTAR VEHICULOS" << endl;
-  cout << "\t\t\t-------------------------" << endl;
-  cout << "\n\n";
+  cout << "\n\n\t\t\tLISTAR VEHICULOS" << endl;
+  cout << "\t\t\t----------------" << endl;
+  cin.ignore();
   listarVehiculos(lista); // Llama a la función listarVehiculos para mostrar la lista de vehículos
   esperar();
 }
@@ -580,7 +556,7 @@ void menuGestionDeVehiculos(tVehiculoPtr *lista)
     if (opcion == "1")
     {
       // Agregar vehiculo: implementa la lógica para agregar un vehículo
-      menuAgregar(lista);
+      agregar(lista);
     }
     else if (opcion == "2")
     {
@@ -590,17 +566,17 @@ void menuGestionDeVehiculos(tVehiculoPtr *lista)
     else if (opcion == "3")
     {
       // Eliminar vehiculo: implementa la lógica para eliminar un vehículo existente
-      menuEliminarVehiculo(lista);
+      eliminar(lista);
     }
     else if (opcion == "4")
     {
       // Consultar vehiculo: implementa la lógica para consultar la información de un vehículo
-      menuConsultar(*lista);
+      consultar(*lista);
     }
     else if (opcion == "5")
     {
       // Listar vehiculos: implementa la lógica para mostrar una lista de vehículos
-      menuListar(*lista);
+      listar(*lista);
     }
     else if (opcion == "0")
     {
