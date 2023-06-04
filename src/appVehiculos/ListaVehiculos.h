@@ -36,6 +36,37 @@ void generarLogo()
 }
 
 /**
+ * Espera a que el usuario presione la tecla Enter para continuar.
+ */
+void esperar()
+{
+  cout << "\n\tPresione Enter para continuar...";
+  cin.get();
+}
+
+/**
+ * Verifica si un tipo de caucho es válido.
+ *
+ * @param tipoCaucho El tipo de caucho a verificar.
+ * @return True si el tipo de caucho es válido, False en caso contrario.
+ */
+bool tipoCauchoValido(string tipoCaucho)
+{
+  return ((tipoCaucho == "normales") || (tipoCaucho == "anti coleo") || (tipoCaucho == "todo terreno"));
+}
+
+/**
+ * Verifica si un tamano de caucho es válido.
+ *
+ * @param tamanoCaucho El tamano de caucho a verificar.
+ * @return True si el tamano de caucho es válido, False en caso contrario.
+ */
+bool tamanoCauchoValido(string tamanoCaucho)
+{
+  return ((tamanoCaucho == "pegado al piso") || (tamanoCaucho == "normales") || (tamanoCaucho == "monstertruck"));
+}
+
+/**
  * Verifica si un símbolo está asignado a algún vehículo en la lista enlazada.
  * @param lista: Puntero al primer nodo de la lista de vehículos.
  * @param simbolo: Símbolo a verificar.
@@ -65,7 +96,7 @@ bool existeSimbolo(tVehiculoPtr lista, char simbolo)
  */
 char generarSimboloAleatorio(tVehiculoPtr lista)
 {
-  const string simbolos = "#$%&*ºª@?!*^£☺☻♥♦♣•◘○◙♪♫☼►◄¶§▬▲▼%&"; // Lista de símbolos disponibles
+  const string simbolos = "#$%&*ºª@?!*^£☺☻♥♦♣•◘○◙♪♫☼►◄¶§▬▲▼%&"; // Lista de símbolos disponibles (34, pero maximo puedo usar 30 de ellos)
   char simbolo;
 
   do
@@ -84,12 +115,15 @@ char generarSimboloAleatorio(tVehiculoPtr lista)
  */
 tVehiculoPtr crearNodoVehiculo(tVehiculo temporal)
 {
-  tVehiculoPtr nodo = new tVehiculo;                    // Crea un nuevo nodo de vehículo en memoria
-  nodo->nombreEspanol = temporal.nombreEspanol;         // Asigna el nombre en español al nodo
-  nodo->nombreIngles = temporal.nombreIngles;           // Asigna el nombre en inglés al nodo
-  nodo->nombreConductores = temporal.nombreConductores; // Asigna el nombre del conductor al nodo
-  nodo->tipoCaucho = temporal.tipoCaucho;               // Asigna el tipo de caucho al nodo
-  nodo->tamanoDelCaucho = temporal.tamanoDelCaucho;     // Asigna el tamaño del caucho al nodo
+  tVehiculoPtr nodo = new tVehiculo;                                          // Crea un nuevo nodo de vehículo en memoria
+  nodo->nombreEspanol = temporal.nombreEspanol;                               // Asigna el nombre en español al nodo
+  nodo->nombreIngles = temporal.nombreIngles;                                 // Asigna el nombre en inglés al nodo
+  nodo->nombreConductores = temporal.nombreConductores;                       // Asigna el nombre del conductor al nodo
+  nodo->tipoCaucho = temporal.tipoCaucho;                                     // Asigna el tipo de caucho al nodo
+  nodo->tamanoDelCaucho = temporal.tamanoDelCaucho;                           // Asigna el tamaño del caucho al nodo
+  nodo->velocidad = temporal.velocidad;                                       // Asigna la velocidad al nodo
+  nodo->simbolo = temporal.simbolo;                                           // Asigna la velocidad al nodo
+  nodo->tiempoDeDisminucionVelocidad = temporal.tiempoDeDisminucionVelocidad; // Asigna la velocidad al nodo
   // nodo->simbolo = generarSimboloAleatorio(lista);
   nodo->prox = NULL; // Establece el puntero "prox" del nodo como NULL (sin siguiente nodo)
 
@@ -154,7 +188,6 @@ void listarVehiculos(tVehiculoPtr lista)
     mostrarVehiculo(lista, aux);
     aux = aux->prox;
   }
-  system("pause");
 }
 
 /**

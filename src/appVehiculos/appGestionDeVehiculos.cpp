@@ -7,6 +7,32 @@
 using namespace std;
 
 /**
+ * Convierte un string a minúsculas.
+ * @param str El string a convertir.
+ * @return El string convertido a minúsculas.
+ */
+string convertirMinusculas(string str)
+{
+  // for each
+  // char &c es una referencia para cada elemento del contenedor iterable str
+  for (char &c : str)
+  {
+    c = tolower(c); // Convierte cada carácter a minúsculas
+  }
+  return str;
+}
+
+/**
+ * Verifica si una cadena de caracteres está vacía.
+ * @param str Cadena de caracteres a verificar.
+ * @return Devuelve true si la cadena está vacía, de lo contrario, devuelve false.
+ */
+bool stringVacio(string str)
+{
+  return (str.length() == 0); // Comprueba si la longitud de la cadena es igual a cero
+}
+
+/**
  * Comprueba si un string de un solo carácter es numérico.
  *
  * @param str El string que se desea comprobar.
@@ -22,6 +48,243 @@ bool esCaracterNumerico(const std::string &str)
 }
 
 /**
+ * Permite al usuario ingresar y validar los nombres de un vehículo en español e inglés.
+ *
+ * @param lista: Puntero a la lista enlazada de vehículos.
+ * @param nombreEspanol: Puntero a un string donde se almacenará el nombre en español ingresado.
+ * @param nombreIngles: Puntero a un string donde se almacenará el nombre en inglés ingresado.
+ */
+void leerNombres(tVehiculoPtr lista, string *nombreEspanol, string *nombreIngles)
+{
+  bool repetir = true; // Variable para controlar el bucle de repetición
+  string nombreEspanolAux;
+  string nombreInglesAux;
+
+  while (repetir) // Bucle para solicitar y validar los nombres
+  {
+    system("cls"); // Limpia la pantalla de la consola
+    generarLogo(); // Muestra un logo en la consola
+    cout << "\n\n\t\t\t MENU AGREGAR VEHICULO" << endl;
+    cout << "\t\t\t----------------------" << endl;
+    cout << "\n\n\tNombre vehiculo\n";
+
+    cout << "\n\tIngrese el nombre del vehiculo en espanol: ";
+    getline(cin, nombreEspanolAux); // Lee el nombre en español ingresado por el usuario
+
+    cout << "\n\tIngrese el nombre del vehiculo en ingles: ";
+    getline(cin, nombreInglesAux); // Lee el nombre en inglés ingresado por el usuario
+
+    bool nombreEspValido = !existeNombre(lista, nombreEspanolAux) && !stringVacio(nombreEspanolAux); // Verifica si el nombre en español es válido
+    bool nombreIngValido = !stringVacio(nombreInglesAux);                                            // Verifica si el nombre en inglés es válido
+
+    if (nombreEspValido && nombreIngValido) // Si ambos nombres son válidos
+    {
+      *nombreEspanol = nombreEspanolAux; // Asigna el nombre en español ingresado al puntero correspondiente
+      *nombreIngles = nombreInglesAux;   // Asigna el nombre en inglés ingresado al puntero correspondiente
+      repetir = false;                   // Sale del bucle de repetición
+    }
+    else // Si algún nombre es inválido
+    {
+      cout << "\n\tNombres invalidos, ingreselos nuevamente";
+      esperar(); // Pausa la ejecución y espera a que el usuario presione Enter para continuar
+    }
+  }
+}
+
+/**
+ * Permite al usuario ingresar y validar el nombre del o los conductores de un vehículo.
+ *
+ * @param nombreConductores: Puntero a un string donde se almacenará el nombre del o los conductores ingresado.
+ */
+void leerConductores(string *nombreConductores)
+{
+  string nombreConductoresAux; // Variable auxiliar para almacenar el nombre del o los conductores ingresado
+  bool repetir = true;         // Variable para controlar el bucle de repetición
+
+  while (repetir) // Bucle para solicitar y validar el nombre del o los conductores
+  {
+    system("cls"); // Limpia la pantalla de la consola
+    generarLogo(); // Muestra un logo en la consola
+    cout << "\n\n\t\t\t MENU AGREGAR VEHICULO" << endl;
+    cout << "\t\t\t----------------------" << endl;
+    cout << "\n\n\tNombre conductores\n";
+
+    cout << "\n\tIngrese el nombre del/los conductor/es: ";
+    getline(cin, nombreConductoresAux); // Lee el nombre del o los conductores ingresado por el usuario
+
+    bool nombreConductoresValido = !stringVacio(nombreConductoresAux); // Verifica si el nombre del o los conductores no está vacío
+
+    if (nombreConductoresValido) // Si el nombre del o los conductores es válido
+    {
+      *nombreConductores = nombreConductoresAux; // Asigna el nombre del o los conductores ingresado al puntero correspondiente
+      repetir = false;                           // Sale del bucle de repetición
+    }
+    else // Si el nombre del o los conductores es inválido (vacío)
+    {
+      cout << "\n\tNombre de conductores vacio, ingreselo nuevamente";
+      esperar(); // Pausa la ejecución y espera a que el usuario presione Enter para continuar
+    }
+  }
+}
+
+/**
+ * Permite al usuario ingresar y validar el tipo de caucho de un vehículo.
+ *
+ * @param tipoCaucho: Puntero a un string donde se almacenará el tipo de caucho ingresado.
+ */
+void leerTipoCaucho(string *tipoCaucho)
+{
+  string tipoCauchoAux; // Variable auxiliar para almacenar el tipo de caucho ingresado
+  bool repetir = true;  // Variable para controlar el bucle de repetición
+
+  while (repetir) // Bucle para solicitar y validar el tipo de caucho
+  {
+    system("cls"); // Limpia la pantalla de la consola
+    generarLogo(); // Muestra un logo en la consola
+    cout << "\n\n\t\t\t MENU AGREGAR VEHICULO" << endl;
+    cout << "\t\t\t----------------------" << endl;
+    cout << "\n\n\tTipo de Caucho\n";
+
+    cout << "\t\t-Normales\n";
+    cout << "\t\t-Anti coleo\n";
+    cout << "\t\t-Todo terreno\n";
+
+    cout << "\n\tIngrese el tipo de caucho: ";
+    getline(cin, tipoCauchoAux);                        // Lee el tipo de caucho ingresado por el usuario
+    tipoCauchoAux = convertirMinusculas(tipoCauchoAux); // Convierte el tipo de caucho a minúsculas
+
+    bool tipoDeCauchoValido = tipoCauchoValido(tipoCauchoAux); // Verifica si el tipo de caucho es válido
+
+    if (tipoDeCauchoValido) // Si el tipo de caucho es válido
+    {
+      *tipoCaucho = tipoCauchoAux; // Asigna el tipo de caucho ingresado al puntero correspondiente
+      repetir = false;             // Sale del bucle de repetición
+    }
+    else // Si el tipo de caucho es inválido
+    {
+      cout << "\n\tTipo de caucho invalido, ingreselo nuevamente";
+      esperar(); // Pausa la ejecución y espera a que el usuario presione Enter para continuar
+    }
+  }
+}
+
+/**
+ * Permite al usuario ingresar y validar el tamano de caucho de un vehículo.
+ *
+ * @param tamanoCaucho: Puntero a un string donde se almacenará el tamano de caucho ingresado.
+ */
+void leerTamanoCaucho(string *tamanoCaucho)
+{
+  string tamanoCauchoAux; // Variable auxiliar para almacenar el tamano de caucho ingresado
+  bool repetir = true;    // Variable para controlar el bucle de repetición
+
+  while (repetir) // Bucle para solicitar y validar el tamano de caucho
+  {
+    system("cls"); // Limpia la pantalla de la consola
+    generarLogo(); // Muestra un logo en la consola
+    cout << "\n\n\t\t\t MENU AGREGAR VEHICULO" << endl;
+    cout << "\t\t\t----------------------" << endl;
+    cout << "\n\n\tTamano de Caucho\n";
+
+    cout << "\t\t-Pegado al piso\n";
+    cout << "\t\t-Normales\n";
+    cout << "\t\t-MonsterTruck \n";
+
+    cout << "\n\tIngrese el tamano de caucho: ";
+    getline(cin, tamanoCauchoAux);                          // Lee el tamano de caucho ingresado por el usuario
+    tamanoCauchoAux = convertirMinusculas(tamanoCauchoAux); // Convierte el tamano de caucho a minúsculas
+
+    bool tamanoDeCauchoValido = tamanoCauchoValido(tamanoCauchoAux); // Verifica si el tamano de caucho es válido
+
+    if (tamanoDeCauchoValido) // Si el tamano de caucho es válido
+    {
+      *tamanoCaucho = tamanoCauchoAux; // Asigna el tamano de caucho ingresado al puntero correspondiente
+      repetir = false;                 // Sale del bucle de repetición
+    }
+    else // Si el tamano de caucho es inválido
+    {
+      cout << "\n\tTamano de caucho invalido, ingreselo nuevamente";
+      esperar(); // Pausa la ejecución y espera a que el usuario presione Enter para continuar
+    }
+  }
+}
+
+/**
+ * Permite al usuario ingresar y validar la velocidad de un vehículo,
+ * según el tamaño de los neumáticos.
+ *
+ * @param tamanoCaucho: El tamaño de los neumáticos del vehículo.
+ * @param velocidad: Puntero a un string donde se almacenará la velocidad ingresada.
+ */
+void leerVelocidad(string tamanoCaucho, string *velocidad)
+{
+  string velocidadAux;
+  bool repetir = true;
+
+  while (repetir)
+  {
+    system("cls");
+    generarLogo();
+    cout << "\n\n\t\t\t MENU AGREGAR VEHICULO" << endl;
+    cout << "\t\t\t----------------------" << endl;
+    cout << "\n\n\tVelocidad\n";
+    if (tamanoCaucho == "pegado al piso")
+    {
+      cout << "\t\t-El super ferrari\n";
+      cout << "\t\t-Delorean\n";
+      cout << "\n\tIngrese la velocidad: ";
+      getline(cin, velocidadAux);
+      velocidadAux = convertirMinusculas(velocidadAux);
+      if ((velocidadAux == "el super ferrari") || (velocidadAux == "delorean"))
+      {
+        *velocidad = velocidadAux;
+        repetir = false;
+      }
+      else
+      {
+        cout << "\n\n\tVelocidad invalida";
+        esperar();
+      }
+    }
+    else if (tamanoCaucho == "normales")
+    {
+      cout << "\t\t-Crucero\n";
+      cout << "\t\t-Perezoso\n";
+      cout << "\n\tIngrese la velocidad: ";
+      getline(cin, velocidadAux);
+      velocidadAux = convertirMinusculas(velocidadAux);
+      if ((velocidadAux == "perezoso") || (velocidadAux == "crucero"))
+      {
+        *velocidad = velocidadAux;
+        repetir = false;
+      }
+      else
+      {
+        cout << "\n\n\tVelocidad invalida";
+        esperar();
+      }
+    }
+    else if (tamanoCaucho == "monstertruck")
+    {
+      cout << "\t\t-Perezoso\n";
+      cout << "\n\tIngrese la velocidad: ";
+      getline(cin, velocidadAux);
+      velocidadAux = convertirMinusculas(velocidadAux);
+      if (velocidadAux == "perezoso")
+      {
+        *velocidad = velocidadAux;
+        repetir = false;
+      }
+      else
+      {
+        cout << "\n\n\tVelocidad invalida";
+        esperar();
+      }
+    }
+  }
+}
+
+/**
  * Agrega un nuevo vehículo a la lista de vehículos.
  *
  * @param lista: Puntero a un puntero al inicio de la lista de vehículos.
@@ -29,84 +292,167 @@ bool esCaracterNumerico(const std::string &str)
 void menuAgregar(tVehiculoPtr *lista)
 {
   tVehiculo temporal;
-  bool repetir = true;
 
-  cin.ignore();
-  while (repetir)
+  // establezco un limite maximo de 30 vehiculos por la cantidad de caracteres disponibles para representarlos
+  if (contarNodos(*lista) <= 30)
   {
-    system("cls"); // Limpia la pantalla
-    // Imprime el encabezado del menú
-    generarLogo();
-    cout << "\n\n\t\t\tMENU AGREGAR VEHICULO" << endl;
+    cin.ignore();
+    leerNombres(*lista, &(temporal.nombreEspanol), &(temporal.nombreIngles));
+    leerConductores(&(temporal.nombreConductores));
+    leerTipoCaucho(&(temporal.tipoCaucho));
+    leerTamanoCaucho(&(temporal.tamanoDelCaucho));
+    leerVelocidad(temporal.tamanoDelCaucho, &(temporal.velocidad));
+    temporal.simbolo = generarSimboloAleatorio(*lista); // le asigno un simbolo unico
+
+    agregarNodoVehiculo(lista, crearNodoVehiculo(temporal));
+
+    // Mostrar Informacion del vehiculo agregado
+    system("cls");
+    cout << "\n\n\t\t\tINFORMACION DEL VEHICULO" << endl;
     cout << "\t\t\t-------------------------" << endl;
+    mostrarVehiculo(*lista, *lista);
+    cout << "\n\n\tVehiculo agregado con exito" << endl;
+    cout << "\tPresione Enter para continuar...";
+    cin.get();
+  }
+}
 
-    cout << "\n\tIngrese el nombre del vehiculo en espanol: ";
-    getline(cin, temporal.nombreEspanol);
-    cout << "\n\tIngrese el nombre del vehiculo en ingles: ";
-    getline(cin, temporal.nombreIngles);
-    cout << "\n\tIngrese el nombre del/los conductor/es: ";
-    getline(cin, temporal.nombreConductores);
-    cout << "\n\tIngrese el tipo de caucho: ";
-    getline(cin, temporal.tipoCaucho);
-    cout << "\n\tIngrese el tamano del caucho: ";
-    getline(cin, temporal.tamanoDelCaucho);
-
-    // validacion de los datos ingresados
-    bool datosValidos = !existeNombre(*lista, temporal.nombreEspanol);
-    if (datosValidos)
+/**
+ * Verifica si una opcion esta en el rango de nodos y si es caracter numerico.
+ * @param lista Puntero al primer nodo de la lista de vehículos.
+ * @param opcion Opción ingresada por el usuario.
+ * @return Devuelve true si la opción es válida, de lo contrario, devuelve false.
+ */
+bool opcionValida(tVehiculoPtr lista, string opcion)
+{
+  if (esCaracterNumerico(opcion))
+  {
+    bool rangoValido = stoi(opcion) <= contarNodos(lista); // Convierte el string a entero y verifica si está dentro del rango válido
+    if (rangoValido)
     {
-      repetir = false;
-    }
-    else
-    {
-      cout << "\n\tLos Datos ingresados son invalidos, ingreselos nuevamente" << endl;
-      cout << "\tPresione Enter para continuar...";
-      cin.get();
+      return true; // La opción es válida
     }
   }
 
-  agregarNodoVehiculo(lista, crearNodoVehiculo(temporal));
-
-  // Mostrar Informacion del vehiculo agregado
-  system("cls");
-  cout << "\n\n\t\t\tINFORMACION DEL VEHICULO" << endl;
-  cout << "\t\t\t-------------------------" << endl;
-  mostrarVehiculo(*lista, *lista);
-  cout << "\n\n\tVehiculo agregado con exito" << endl;
-  cout << "\tPresione Enter para continuar...";
-  cin.get();
+  return false; // La opción no es válida
 }
 
-/*
-void menuModificar(tVehiculoPtr lista)
+/**
+ * Pide el vehiculo que se desea modificar a traves de un menu de todos los vehiculos disponibles.
+ * @param lista Puntero al primer nodo de la lista de vehículos.
+ * @return Devuelve el apuntador al vehiculo que el usuario selecciono.
+ */
+tVehiculoPtr pedirVehiculoAModificar(tVehiculoPtr lista)
 {
-  string nombre;
+  string opcion;
   bool repetir = true;
-
-  cin.ignore();
-  while (repetir)
+  do
   {
     system("cls");
     generarLogo();
     cout << "\n\n\t\t\tMENU MODIFICAR VEHICULO" << endl;
-    cout << "\t\t\t-------------------------" << endl;
+    cout << "\t\t\t-----------------------" << endl;
+    listarNombres(lista);
+    cout << "\n\tIngrese una opcion: ";
+    cin >> opcion;
 
-    cout << "\n\tIngrese el nombre del vehiculo a modificar: ";
-    getline(cin, nombre);
-
-    if (existeNombre(lista, nombre))
+    if (opcionValida(lista, opcion)) // verifica si esta en el rango de nodos y si es numerico
     {
       repetir = false;
     }
-    else
-    {
-      cout << "\nVehiculo no encontrado" << endl;
-      cout << "Presione Enter para continuar...";
-      cin.get();
-    }
+  } while (repetir);
 
+  // pedir el campo a modificar
+  cin.ignore(); // Descartar el carácter de nueva línea pendiente
+  int opcionInt = stoi(opcion);
+  tVehiculoPtr vehiculo = obtenerNodoPorPosicion(lista, opcionInt);
+  return vehiculo;
+}
+
+/**
+ * Permite al usuario seleccionar el campo a modificar de un vehículo.
+ *
+ * @return El número entero correspondiente al campo seleccionado.
+ */
+int pedirCampoAModificar()
+{
+  string opcion;       // Variable para almacenar la opción ingresada por el usuario
+  bool repetir = true; // Variable para controlar el bucle de repetición
+
+  do
+  {
+    system("cls"); // Limpia la pantalla de la consola
+    generarLogo(); // Muestra un logo en la consola
+    cout << "\n\n\t\t\tMENU MODIFICAR VEHICULO" << endl;
+    cout << "\t\t\t-----------------------" << endl;
+    cout << "\n\t Ingrese el campo a modificar" << endl;
+    cout << "\n\t 1. Nombres";
+    cout << "\n\t 2. Nombre de conductores";
+    cout << "\n\t 3. Tipo de caucho";
+    cout << "\n\t 4. Tamano de caucho";
+    cout << "\n\t 5. Velocidad" << endl;
+    cout << "\n\tIngrese una opcion: ";
+    cin >> opcion;
+
+    if ((opcion >= "1") && (opcion <= "6") && (esCaracterNumerico(opcion))) // Verifica si la opción ingresada es válida
+    {
+      repetir = false; // Sale del bucle de repetición
+    }
+  } while (repetir);
+
+  int opcionInt = stoi(opcion); // Convierte la opción ingresada a un número entero
+  return opcionInt;             // Retorna el número entero correspondiente al campo seleccionado
+}
+
+/**
+ * Permite al usuario seleccionar un vehículo y el campo que desea modificar.
+ * Realiza la modificación del campo seleccionado según la opción ingresada.
+ *
+ * @param lista Puntero a la lista de vehículos.
+ */
+void modificar(tVehiculoPtr lista)
+{
+  // Pedir el vehículo a modificar
+  tVehiculoPtr nodo = pedirVehiculoAModificar(lista);
+
+  // Pedir el campo a modificar
+  int opcion = pedirCampoAModificar();
+
+  switch (opcion)
+  {
+  case 1:
+    // Modificar nombres
+    cin.ignore();
+    leerNombres(lista, &(nodo->nombreEspanol), &(nodo->nombreIngles));
+    break;
+  case 2:
+    // Modificar nombre de conductores
+    leerConductores(&(nodo->nombreConductores));
+    break;
+  case 3:
+    // Modificar tipo de caucho
+    leerTipoCaucho(&(nodo->tipoCaucho));
+    break;
+  case 4:
+    // Modificar tamaño de caucho
+    leerTamanoCaucho(&(nodo->tamanoDelCaucho));
+    leerVelocidad(nodo->tamanoDelCaucho, &(nodo->velocidad));
+    break;
+  case 5:
+    // Modificar tamaño de caucho y velocidad
+    leerTamanoCaucho(&(nodo->tamanoDelCaucho));
+    leerVelocidad(nodo->tamanoDelCaucho, &(nodo->velocidad));
+    break;
   }
-}*/
+
+  system("cls"); // Limpia la pantalla de la consola
+  generarLogo(); // Muestra un logo en la consola
+  cout << "\n\n\t\t\tMENU MODIFICAR VEHICULO" << endl;
+  cout << "\t\t\t-----------------------" << endl;
+  mostrarVehiculo(lista, nodo); // Muestra la información actualizada del vehículo modificado
+  cout << "\n\t Modificacion existosa";
+  esperar();
+}
 
 /**
  * Elimina un vehículo de la lista enlazada.
@@ -137,8 +483,7 @@ void menuEliminarVehiculo(tVehiculoPtr *lista)
     else
     {
       cout << "\n\tVehiculo no encontrado" << endl;
-      cout << "\tPresione Enter para continuar...";
-      cin.get();
+      esperar();
     }
   }
 
@@ -154,26 +499,6 @@ void menuEliminarVehiculo(tVehiculoPtr *lista)
   mostrarVehiculo(*lista, &aux); // muestro el vehiculo eliminado
   cout << "\t\nPresione Enter para continuar...";
   cin.get();
-}
-
-/**
- * Verifica si una opción ingresada por el usuario es válida.
- * @param lista Puntero al primer nodo de la lista de vehículos.
- * @param opcion Opción ingresada por el usuario.
- * @return Devuelve true si la opción es válida, de lo contrario, devuelve false.
- */
-bool opcionValida(tVehiculoPtr lista, string opcion)
-{
-  if (esCaracterNumerico(opcion))
-  {
-    bool rangoValido = stoi(opcion) <= contarNodos(lista); // Convierte el string a entero y verifica si está dentro del rango válido
-    if (rangoValido)
-    {
-      return true; // La opción es válida
-    }
-  }
-
-  return false; // La opción no es válida
 }
 
 /**
@@ -195,7 +520,7 @@ void menuConsultar(tVehiculoPtr lista)
     cout << "\n\tIngrese una opcion: ";
     cin >> opcion;
 
-    if (opcionValida(lista, opcion))
+    if (opcionValida(lista, opcion)) // verifica si esta en el rango de nodos y si es numerico
     {
       repetir = false;
     }
@@ -222,6 +547,7 @@ void menuListar(tVehiculoPtr lista)
   cout << "\t\t\t-------------------------" << endl;
   cout << "\n\n";
   listarVehiculos(lista); // Llama a la función listarVehiculos para mostrar la lista de vehículos
+  esperar();
 }
 
 /**
@@ -259,7 +585,7 @@ void menuGestionDeVehiculos(tVehiculoPtr *lista)
     else if (opcion == "2")
     {
       // Modificar vehiculo: implementa la lógica para modificar un vehículo existente
-      // menuModificar(*lista);
+      modificar(*lista);
     }
     else if (opcion == "3")
     {
