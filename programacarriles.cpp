@@ -5,8 +5,8 @@ using namespace std;
 
 // algunos comentarios.
 // debemos usar las variables que tiene luis en el programa y las que agregue Levin, pero esta seria una estructura y funciones
-//  Faltaria llamar las funciones para poner los carros creados por luis en los carriles.
-//  pensaba en agregar una bandera o algo de finish al final
+// Faltaria llamar las funciones para poner los carros creados por luis en los carriles.
+// pensaba en agregar una bandera o algo de finish al final
 // también pensé en poner en librerias estas funciones e incluirlo en el principal que tiene luis y el de levin tambien por libreria
 
 // Definición de la estructura del nodo secundario
@@ -27,6 +27,12 @@ struct NodoPrincipal
     NodoSecundario *ultimo_vehiculo;
     NodoPrincipal *siguiente;
     NodoPrincipal *anterior;
+};
+
+struct Obstaculo
+{ // nos faltaria agregar lo del archivo con los simbolos de los obstaculos y los calculos
+    int posicion;
+    Obstaculo *siguiente;
 };
 
 // Función para insertar un nuevo nodo principal en la lista
@@ -91,7 +97,33 @@ void agregarCarriles(NodoPrincipal *cabeza)
     }
 }
 
-void dibujarPista(NodoPrincipal *cabeza)
+void generarObstaculo(Obstaculo *&cabeza, int longitudPista)
+{
+    // Generar una posición aleatoria para el obstáculo
+    int posicion = rand() % longitudPista * 1000;
+
+    // Crear un nuevo obstáculo
+    Obstaculo *nuevoObstaculo = new Obstaculo;
+    nuevoObstaculo->posicion = posicion;
+    nuevoObstaculo->siguiente = nullptr;
+
+    // Agregar el obstáculo a la lista
+    if (cabeza == nullptr)
+    {
+        cabeza = nuevoObstaculo;
+    }
+    else
+    {
+        Obstaculo *actual = cabeza;
+        while (actual->siguiente != nullptr)
+        {
+            actual = actual->siguiente;
+        }
+        actual->siguiente = nuevoObstaculo;
+    }
+}
+
+void dibujarPista(NodoPrincipal *cabeza, int longitudPista, Obstaculo *cabezaObstaculos)
 {
     // Limpiar la consola
     system("cls");
@@ -99,6 +131,9 @@ void dibujarPista(NodoPrincipal *cabeza)
     // Definir los caracteres para dibujar los carriles y la línea central
     char carril = '|';
     char lineaCentral = '-';
+
+    // Definir la posición de la meta
+    int meta = longitudPista * 1000;
 
     // Recorrer la lista enlazada secundaria de cada nodo principal
     NodoPrincipal *actual = cabeza;
@@ -114,6 +149,31 @@ void dibujarPista(NodoPrincipal *cabeza)
             }
             cout << endl;
 
+            // Dibujar las líneas cada kilómetro, cada linea dibujada equivale a 1 km, pista de 80km en total
+            for (int i = 0; i < longitudPista; i++)
+            {
+                if ((i + 1) % 10 == 0)
+                {
+                    cout << "+";
+                }
+                else
+                {
+                    cout << "-";
+                }
+
+                // Dibujar los obstáculos
+                Obstaculo *actualObstaculo = cabezaObstaculos;
+                while (actualObstaculo != nullptr)
+                {
+                    if (actualObstaculo->posicion == (i + 1) * 1000)
+                    {
+                        cout << "O"; // aqui pondremos los diferentes obstaculos que hay que utilizar
+                    }
+                    actualObstaculo = actualObstaculo->siguiente;
+                }
+            }
+            cout << endl;
+
             // Dibujar la línea central
             for (int i = 0; i < actualSecundario->carriles; i++)
             {
@@ -124,11 +184,15 @@ void dibujarPista(NodoPrincipal *cabeza)
             // Dibujar los vehículos
             for (int i = 0; i < actualSecundario->vehiculos; i++)
             {
-                cout << "&";
-                cout << "*";
-                cout << "+"; // aqui deberiamos agregar los vehiculos con su signo dependiendo el que elija la persona
+                cout << "V"; // aqui dibujamos los vehiculos con los diferentes simbolos
             }
             cout << endl;
+
+            // Verificar si se llegó a la meta
+            if (actualSecundario->posicion >= meta)
+            {
+                cout << "¡Los vehículos han llegado a la meta!" << endl;
+            }
 
             actualSecundario = actualSecundario->siguiente;
         }
@@ -137,7 +201,6 @@ void dibujarPista(NodoPrincipal *cabeza)
     }
 }
 
-// Función para imprimir la lista enlazada completa con la posicion de los carros
 void imprimirLista(NodoPrincipal *cabeza)
 {
     NodoPrincipal *nodoActual = cabeza;
@@ -153,6 +216,33 @@ void imprimirLista(NodoPrincipal *cabeza)
         nodoActual = nodoActual->siguiente;
     }
 }
+
+void simularCarrera(NodoPrincipal *cabeza)
+{
+    // Definir la longitud de la pista y la cantidad de obstáculos
+    int longitudPista = 80; // puse longitud de 80km
+    int numObstaculos = 5;
+
+    // Generar los obstáculos de manera aleatoria
+    Obstaculo *cabezaObstaculos = nullptr;
+    for (int i = 0; i < numObstaculos; i++)
+    {
+        generarObstaculo(cabezaObstaculos, longitudPista);
+    }
+
+    // Simular la carrera
+    while (true)
+    {
+        // Dibujar la pista de carreras
+        dibujarPista(cabeza, longitudPista, cabezaObstaculos);
+
+        // Falta mover los vehículos
+
+        // Falta verificar si los vehículos chocan con los obstáculos
+    }
+}
+
+// Función para imprimir la lista enlazada completa con la posicion de los carros
 
 int main()
 {
@@ -175,5 +265,6 @@ int main()
     dibujarPista(cabeza);
     agregarCarriles(cabeza);
     imprimirLista(cabeza);
+    // falta llamar a las otras funciones necesarias.s
     return 0;
 }
