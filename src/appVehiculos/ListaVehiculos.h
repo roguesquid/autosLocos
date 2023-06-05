@@ -116,15 +116,15 @@ char generarSimboloAleatorio(tVehiculoPtr lista)
  */
 tVehiculoPtr crearNodoVehiculo(tVehiculo temporal)
 {
-  tVehiculoPtr nodo = new tVehiculo;                                          // Crea un nuevo nodo de vehículo en memoria
-  nodo->nombreEspanol = temporal.nombreEspanol;                               // Asigna el nombre en español al nodo
-  nodo->nombreIngles = temporal.nombreIngles;                                 // Asigna el nombre en inglés al nodo
-  nodo->nombreConductores = temporal.nombreConductores;                       // Asigna el nombre del conductor al nodo
-  nodo->tipoCaucho = temporal.tipoCaucho;                                     // Asigna el tipo de caucho al nodo
-  nodo->tamanoDelCaucho = temporal.tamanoDelCaucho;                           // Asigna el tamaño del caucho al nodo
-  nodo->velocidad = temporal.velocidad;                                       // Asigna la velocidad al nodo
-  nodo->simbolo = temporal.simbolo;                                           // Asigna la velocidad al nodo
-  nodo->tiempoDeDisminucionVelocidad = temporal.tiempoDeDisminucionVelocidad; // Asigna la velocidad al nodo
+  tVehiculoPtr nodo = new tVehiculo;                    // Crea un nuevo nodo de vehículo en memoria
+  nodo->nombreEspanol = temporal.nombreEspanol;         // Asigna el nombre en español al nodo
+  nodo->nombreIngles = temporal.nombreIngles;           // Asigna el nombre en inglés al nodo
+  nodo->nombreConductores = temporal.nombreConductores; // Asigna el nombre del conductor al nodo
+  nodo->tipoCaucho = temporal.tipoCaucho;               // Asigna el tipo de caucho al nodo
+  nodo->tamanoDelCaucho = temporal.tamanoDelCaucho;     // Asigna el tamaño del caucho al nodo
+  nodo->velocidad = temporal.velocidad;                 // Asigna la velocidad al nodo
+  nodo->simbolo = temporal.simbolo;                     // Asigna la velocidad al nodo
+  nodo->tiempoDeDisminucionVelocidad = 0;               // Asigna la velocidad al nodo
   // nodo->simbolo = generarSimboloAleatorio(lista);
   nodo->prox = NULL; // Establece el puntero "prox" del nodo como NULL (sin siguiente nodo)
 
@@ -339,7 +339,7 @@ int contarNodos(tVehiculoPtr lista)
  */
 void escribirListaEnArchivo(tVehiculoPtr lista)
 {
-  ofstream archivo;
+  ofstream archivo; // ofstream representa un tipo de dato de archivo de entrada output-file-stream
 
   archivo.open("datos/autos.txt", ios::out); // abro el archivo en modo escribir
 
@@ -365,9 +365,55 @@ void escribirListaEnArchivo(tVehiculoPtr lista)
     archivo << aux->tamanoDelCaucho << endl;
     archivo << aux->velocidad << endl;
     archivo << aux->tiempoDeDisminucionVelocidad << endl;
-    archivo << "|" << endl;
+    if (aux->prox != NULL)
+    {
+      archivo << "\n";
+    }
     aux = aux->prox;
   }
 
   archivo.close(); // cierro el archivo
+}
+
+void leerListaDeArchivo(tVehiculoPtr *lista)
+{
+  ifstream archivo; // ifstream representa un tipo de dato de archivo de entrada input-file-stream
+
+  archivo.open("datos/autos.txt", ios::in); // abro el archivo en modo leer
+
+  // Si no se pudo crear o abrir el archivo
+  if (archivo.fail())
+  {
+    system("cls");
+    generarLogo();
+    cout << "\n\n\t ERROR: no se pudo abrir el archivo" << endl;
+    cout << "\t Intente reiniciar la aplicacion" << endl;
+    esperar();
+    exit(1);
+  }
+
+  tVehiculo aux; // creo un vehiculo en memoria estatica
+
+  string simbolo;
+  string tiempoDeDisminucionVelocidad;
+  string separador;
+  while (!archivo.eof())
+  { // mientras no sea el final del archivo
+
+    // recibe toda la info de un vehiculo
+    getline(archivo, simbolo);
+    aux.simbolo = simbolo[0];
+    getline(archivo, aux.nombreEspanol);
+    getline(archivo, aux.nombreIngles);
+    getline(archivo, aux.nombreConductores);
+    getline(archivo, aux.tipoCaucho);
+    getline(archivo, aux.tamanoDelCaucho);
+    getline(archivo, aux.velocidad);
+    getline(archivo, tiempoDeDisminucionVelocidad);
+    // aux.tiempoDeDisminucionVelocidad = stoi(tiempoDeDisminucionVelocidad);
+    getline(archivo, separador);
+
+    //  crea el vehiculo en la lista
+    agregarNodoVehiculo(lista, crearNodoVehiculo(aux));
+  }
 }

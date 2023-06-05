@@ -598,5 +598,6 @@ void menuGestionDeVehiculos(tVehiculoPtr *lista)
 int main()
 {
   tVehiculoPtr listaVehiculos = NULL;
+  leerListaDeArchivo(&listaVehiculos);
   menuGestionDeVehiculos(&listaVehiculos); // Llama a la función principal para mostrar el menú de gestión de vehículos
 }
