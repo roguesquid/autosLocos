@@ -147,7 +147,11 @@ void leerTipoCaucho(string *tipoCaucho)
 
     cout << "\t\t-Normales\n";
     cout << "\t\t-Anti coleo\n";
-    cout << "\t\t-Todo terreno\n";
+    cout << "\t\t-Todo terreno 1\n";
+    cout << "\t\t-Todo terreno 2\n";
+    cout << "\t\t-Todo terreno 3\n";
+    cout << "\t\t-Todo terreno 4\n";
+    cout << "\t\t-Todo terreno 5\n";
 
     cout << "\n\tIngrese el tipo de caucho: ";
     getline(cin, tipoCauchoAux);                        // Lee el tipo de caucho ingresado por el usuario
@@ -188,7 +192,7 @@ void leerTamanoCaucho(string *tamanoCaucho)
 
     cout << "\t\t-Pegado al piso\n";
     cout << "\t\t-Normales\n";
-    cout << "\t\t-MonsterTruck \n";
+    cout << "\t\t-MonsterTruck\n";
 
     cout << "\n\tIngrese el tamano de caucho: ";
     getline(cin, tamanoCauchoAux);                          // Lee el tamano de caucho ingresado por el usuario
@@ -304,7 +308,9 @@ void agregar(tVehiculoPtr *lista)
     leerVelocidad(temporal.tamanoDelCaucho, &(temporal.velocidad));
     temporal.simbolo = generarSimboloAleatorio(*lista); // le asigno un simbolo unico
 
-    agregarNodoVehiculo(lista, crearNodoVehiculo(temporal));
+    agregarNodoVehiculo(lista, crearNodoVehiculo(temporal)); // agrego a la lista
+
+    escribirListaEnArchivo(*lista); // actualizo el archivo
 
     // Mostrar Informacion del vehiculo agregado
     system("cls");
@@ -448,6 +454,8 @@ void modificar(tVehiculoPtr lista)
       break;
     }
 
+    escribirListaEnArchivo(lista); // actualizo el archivo
+
     system("cls"); // Limpia la pantalla de la consola
     generarLogo(); // Muestra un logo en la consola
     cout << "\n\n\t\t\tMENU MODIFICAR VEHICULO" << endl;
@@ -478,6 +486,8 @@ void eliminar(tVehiculoPtr *lista)
   tVehiculoPtr nodoAEliminar = pedirVehiculo(*lista);
   tVehiculo aux = *nodoAEliminar;             // guardo en una variable estatica el nodo que voy a eliminar
   eliminarNodoVehiculo(lista, nodoAEliminar); // elimino el vehiculo
+
+  escribirListaEnArchivo(*lista); // actualizo el archivo
 
   // Muestra el vehiculo eliminado
   system("cls"); // limpio la pantalla

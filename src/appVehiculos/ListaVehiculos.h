@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
+#include <fstream>
 
 using namespace std;
 
@@ -8,6 +9,7 @@ using namespace std;
 typedef struct tVehiculo
 {
 
+  char simbolo;
   string nombreEspanol;
   string nombreIngles;
   string nombreConductores;
@@ -15,7 +17,6 @@ typedef struct tVehiculo
   string tamanoDelCaucho;
   string velocidad;
   int tiempoDeDisminucionVelocidad;
-  char simbolo;
   struct tVehiculo *prox;
 } tVehiculo;
 
@@ -52,7 +53,7 @@ void esperar()
  */
 bool tipoCauchoValido(string tipoCaucho)
 {
-  return ((tipoCaucho == "normales") || (tipoCaucho == "anti coleo") || (tipoCaucho == "todo terreno"));
+  return ((tipoCaucho == "normales") || (tipoCaucho == "anti coleo") || (tipoCaucho == "todo terreno 1") || (tipoCaucho == "todo terreno 2") || (tipoCaucho == "todo terreno 3") || (tipoCaucho == "todo terreno 4") || (tipoCaucho == "todo terreno 5"));
 }
 
 /**
@@ -96,7 +97,7 @@ bool existeSimbolo(tVehiculoPtr lista, char simbolo)
  */
 char generarSimboloAleatorio(tVehiculoPtr lista)
 {
-  const string simbolos = "#$%&*ºª@?!*^£☺☻♥♦♣•◘○◙♪♫☼►◄¶§▬▲▼%&"; // Lista de símbolos disponibles (34, pero maximo puedo usar 30 de ellos)
+  const string simbolos = "#$%&*ºª@?!*^£☺☻♥♦♣•◘○◙♪♫☼►◄§▬▲▼%&"; // Lista de símbolos disponibles (34, pero maximo puedo usar 30 de ellos)
   char simbolo;
 
   do
@@ -329,4 +330,44 @@ int contarNodos(tVehiculoPtr lista)
   }
 
   return contador; // Retorna el número de nodos en la lista
+}
+
+/**
+ * Crea o actualiza el archivo de vehiculos añadiendo en el, la lista de vehiculos.
+ *
+ * @param lista El puntero al primer nodo de la lista enlazada.
+ */
+void escribirListaEnArchivo(tVehiculoPtr lista)
+{
+  ofstream archivo;
+
+  archivo.open("datos/autos.txt", ios::out); // abro el archivo en modo escribir
+
+  // Si no se pudo crear o abrir el archivo
+  if (archivo.fail())
+  {
+    system("cls");
+    generarLogo();
+    cout << "\n\n\t ERROR: no se pudo abrir el archivo" << endl;
+    cout << "\t Intente reiniciar la aplicacion" << endl;
+    esperar();
+    exit(1);
+  }
+
+  tVehiculoPtr aux = lista;
+  while (aux != NULL)
+  {
+    archivo << aux->simbolo << endl;
+    archivo << aux->nombreEspanol << endl;
+    archivo << aux->nombreIngles << endl;
+    archivo << aux->nombreConductores << endl;
+    archivo << aux->tipoCaucho << endl;
+    archivo << aux->tamanoDelCaucho << endl;
+    archivo << aux->velocidad << endl;
+    archivo << aux->tiempoDeDisminucionVelocidad << endl;
+    archivo << "|" << endl;
+    aux = aux->prox;
+  }
+
+  archivo.close(); // cierro el archivo
 }
