@@ -193,30 +193,6 @@ void listarVehiculos(tVehiculoPtr lista)
 }
 
 /**
- * Busca un vehículo en la lista por su nombre en español y devuelve un puntero al nodo del vehículo encontrado.
- *
- * @param lista: Puntero al inicio de la lista de vehículos.
- * @param nombreEspanolVehiculo: Nombre del vehículo en español a buscar.
- * @return Puntero al nodo del vehículo encontrado o NULL si no se encuentra.
- */
-tVehiculoPtr buscarVehiculo(tVehiculoPtr lista, string nombreEspanolVehiculo)
-{
-  if (lista)
-  {
-    tVehiculoPtr aux = lista;
-    while (aux != NULL)
-    {
-      if (aux->nombreEspanol == nombreEspanolVehiculo)
-      {
-        return aux;
-      }
-      aux = aux->prox;
-    }
-  }
-  return NULL;
-}
-
-/**
  * Agrega un nodo de vehículo a una lista enlazada.
  *
  * @param lista: Puntero al puntero inicial de la lista.

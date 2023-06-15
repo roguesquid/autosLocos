@@ -152,22 +152,23 @@ bool vehiculoAsignado(tCarrilesPtr listaCarriles, tVehiculoPtr vehiculoAConsulta
  *
  * @param carriles Puntero al primer nodo de la multilista de carriles.
  * @param listaVehiculos Puntero al primer nodo de la lista de vehículos.
- * @return Cantidad de vehiculos no asignados
+ * @return Cantidad de vehículos no asignados.
  */
 int listarVehiculosNoAsignados(tCarrilesPtr carriles, tVehiculoPtr listaVehiculos)
 {
   tVehiculoPtr aux = listaVehiculos; // Puntero auxiliar para recorrer la lista
-  int i = 1;                         // Contador de índice
+  int contador = 0;                  // Contador de vehículos no asignados
 
   while (aux != NULL)
   {
     if (!vehiculoAsignado(carriles, aux))
     {
-      cout << "\t" << i << ". " << aux->nombreEspanol << endl; // Muestra el número de índice y el nombre en español
-      aux = aux->prox;                                         // Avanza al siguiente nodo de la lista
-      i++;                                                     // Incrementa el contador de índice
+      cout << "\t" << (contador + 1) << ". " << aux->nombreEspanol << endl; // Muestra el número de índice y el nombre en español
+      contador++;                                                           // Incrementa el contador de vehículos no asignados
     }
+    aux = aux->prox; // Avanza al siguiente nodo de la lista
   }
+  return contador;
 }
 
 /**

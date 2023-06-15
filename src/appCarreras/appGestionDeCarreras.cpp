@@ -22,8 +22,35 @@ void carrera(tCarrilesPtr carriles)
 {
 }
 
-void vehiculosAleatorios(tCarrilesPtr carriles, tVehiculoPtr listaVehiculos, int numeroCarriles)
+/**
+ * Asigna aleatoriamente un vehículo único a cada carril en la multilista de carriles.
+ *
+ * @param carriles Puntero al primer nodo de la multilista de carriles.
+ * @param numeroCarriles Número total de carriles en la multilista.
+ */
+void vehiculosAleatorios(tCarrilesPtr carriles, int numeroCarriles)
 {
+  cin.ignore();
+  tVehiculoPtr listaNoAsignados = NULL;
+  leerListaDeArchivo(&listaNoAsignados);
+
+  for (int i = 1; i <= numeroCarriles; i++)
+  {
+    int cantidadDeVehiculosNoAsignados = contarNodos(listaNoAsignados);
+    int indiceAleatorio = (rand() % cantidadDeVehiculosNoAsignados) + 1;
+    tVehiculoPtr carroAAsignar = obtenerNodoPorPosicion(listaNoAsignados, indiceAleatorio);
+
+    tCarrilesPtr carrilASerAsignado = recorrerMultilistaHastaPosicion(carriles, i);
+    carrilASerAsignado->vehiculoAsignado = crearNodoVehiculo(*carroAAsignar);
+    eliminarNodoVehiculo(&listaNoAsignados, carroAAsignar);
+  }
+
+  system("cls");
+  generarLogo();
+  cout << "\n\n\t\t\t MENU SELECCION DE VEHICULOS\n";
+  cout << "\t\t\t----------------------\n\n";
+  cout << "\t\t\tVEHICULOS ASIGNADOS CORRECTAMENTE!\n\n";
+  esperar();
 
   carrera(carriles);
 }
@@ -67,7 +94,7 @@ void menuSeleccionDeVehiculos(tCarrilesPtr carriles, tVehiculoPtr listaVehiculos
       cout << "\n\n\t\t\t MENU SELECCION DE VEHICULOS\n";
       cout << "\t\t\t----------------------\n\n";
       int vehiculosNoAsignados = listarVehiculosNoAsignados(carriles, listaVehiculos);
-      cout << "Seleccione un vehiculo a asignar al carril " << i << ": ";
+      cout << "\n\tSeleccione un vehiculo a asignar al carril " << i << ": ";
       cin >> opcion;
 
       // Verifica la entrada ingresada
@@ -75,6 +102,8 @@ void menuSeleccionDeVehiculos(tCarrilesPtr carriles, tVehiculoPtr listaVehiculos
       {
         repetir = false;
       }
+      cout << "\n\n\tOpcion invalida, ingresela nuevamente";
+      esperar();
     }
     int opcionInt = stoi(opcion);                                              // convierte el
     tCarrilesPtr carrilAsignar = recorrerMultilistaHastaPosicion(carriles, i); // busca el carril a asignarle el vehiculo seleccionado
@@ -114,7 +143,7 @@ void menuOpcionesCarrera(tVehiculoPtr listaVehiculos, int numeroCarriles)
   tCarrilesPtr carriles = generarCarriles(numeroCarriles);
   if (opcion == "1")
   {
-    vehiculosAleatorios(carriles, listaVehiculos, numeroCarriles);
+    vehiculosAleatorios(carriles, numeroCarriles);
   }
   else if (opcion == "2")
   {
