@@ -23,16 +23,6 @@ string convertirMinusculas(string str)
 }
 
 /**
- * Verifica si una cadena de caracteres está vacía.
- * @param str Cadena de caracteres a verificar.
- * @return Devuelve true si la cadena está vacía, de lo contrario, devuelve false.
- */
-bool stringVacio(string str)
-{
-  return (str.length() == 0); // Comprueba si la longitud de la cadena es igual a cero
-}
-
-/**
  * Comprueba si un string de un solo carácter es numérico.
  *
  * @param str El string que se desea comprobar.
@@ -45,6 +35,16 @@ bool esCaracterNumerico(const std::string &str)
 
   // Comprobar si el string tiene exactamente un carácter y si coincide con la expresión regular
   return std::regex_match(str, regex);
+}
+
+/**
+ * Verifica si una cadena de caracteres está vacía.
+ * @param str Cadena de caracteres a verificar.
+ * @return Devuelve true si la cadena está vacía, de lo contrario, devuelve false.
+ */
+bool stringVacio(string str)
+{
+  return (str.length() == 0); // Comprueba si la longitud de la cadena es igual a cero
 }
 
 /**

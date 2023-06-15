@@ -2,6 +2,7 @@
 #include <string>
 #include <cstdlib>
 #include <fstream>
+#include <regex>
 
 using namespace std;
 
@@ -278,9 +279,9 @@ void listarNombres(tVehiculoPtr lista)
 }
 
 /**
- * Obtiene el nodo de una lista enlazada en una posición específica.
+ * Obtiene el nodo de una lista de vehiculos en una posición específica.
  *
- * @param lista El puntero al primer nodo de la lista enlazada.
+ * @param lista El puntero al primer nodo de la lista de vehiculos.
  * @param posicion La posición del nodo a obtener.
  * @return El apuntador al nodo en la posición deseada, o NULL si no se encuentra.
  */
@@ -308,10 +309,10 @@ tVehiculoPtr obtenerNodoPorPosicion(tVehiculoPtr lista, int posicion)
 }
 
 /**
- * Cuenta la cantidad de nodos en una lista enlazada.
+ * Cuenta la cantidad de nodos en la lista de vehiculos.
  *
- * @param lista El puntero al primer nodo de la lista enlazada.
- * @return El número de nodos en la lista.
+ * @param lista El puntero al primer nodo de la lista vehiculos.
+ * @return El número de nodos en la lista vehiculos.
  */
 int contarNodos(tVehiculoPtr lista)
 {
@@ -332,6 +333,7 @@ int contarNodos(tVehiculoPtr lista)
   return contador; // Retorna el número de nodos en la lista
 }
 
+// ------------------ARCHIVOS------------------
 /**
  * Crea o actualiza el archivo de vehiculos añadiendo en el, la lista de vehiculos.
  *
