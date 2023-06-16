@@ -309,6 +309,48 @@ int contarNodos(tVehiculoPtr lista)
   return contador; // Retorna el número de nodos en la lista
 }
 
+int velocidad(tVehiculoPtr vehiculo)
+{
+  if (vehiculo->velocidad == "perezoso")
+  {
+    if (vehiculo->tamanoDelCaucho == "monstertruck")
+    {
+      if (vehiculo->tipoCaucho == "todo terreno 1")
+      {
+        return 30;
+      }
+      else if (vehiculo->tipoCaucho == "todo terreno 2")
+      {
+        return 33;
+      }
+      else if (vehiculo->tipoCaucho == "todo terreno 3")
+      {
+        return 35;
+      }
+      else if (vehiculo->tipoCaucho == "todo terreno 4")
+      {
+        return 37;
+      }
+      else if (vehiculo->tipoCaucho == "todo terreno 5")
+      {
+        return 40;
+      }
+    }
+    else
+    {
+      return 25;
+    }
+  }
+  else if (vehiculo->velocidad == "el super ferrari")
+  {
+    return 20;
+  }
+  else if (vehiculo->velocidad == "delorean")
+  {
+    return 18;
+  }
+}
+
 // ------------------ARCHIVOS------------------
 /**
  * Crea o actualiza el archivo de vehiculos añadiendo en el, la lista de vehiculos.

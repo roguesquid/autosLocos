@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
-#include <chrono>
 #include "ListaCarreras.h"
 
 using namespace std;
@@ -18,8 +17,17 @@ bool caracterNumericoDeMaxDosDigitos(const string &cadena)
   return regex_match(cadena, regex);
 }
 
-void carrera(tCarrilesPtr carriles)
+void carrera(tCarrilesPtr carriles, int numeroCarriles)
 {
+  cin.ignore();
+  system("cls");
+  generarLogo();
+  cout << "\n\n\t\t\t\tCARRERA!!!\n";
+  cout << "\t\t\t\t----------\n\n\n\n";
+  cout << "\n\n\t\tPresione cualquier tecla para iniciar la carrera...\n";
+  cin.get();
+  imprimirCarriles(carriles);
+  recorrerCarriles(carriles);
 }
 
 /**
@@ -42,17 +50,18 @@ void vehiculosAleatorios(tCarrilesPtr carriles, int numeroCarriles)
 
     tCarrilesPtr carrilASerAsignado = recorrerMultilistaHastaPosicion(carriles, i);
     carrilASerAsignado->vehiculoAsignado = crearNodoVehiculo(*carroAAsignar);
+    carrilASerAsignado->aba->simbolo = carrilASerAsignado->vehiculoAsignado->simbolo;
     eliminarNodoVehiculo(&listaNoAsignados, carroAAsignar);
   }
 
   system("cls");
   generarLogo();
-  cout << "\n\n\t\t\t MENU SELECCION DE VEHICULOS\n";
-  cout << "\t\t\t----------------------\n\n";
-  cout << "\t\t\tVEHICULOS ASIGNADOS CORRECTAMENTE!\n\n";
+  cout << "\n\n\t\t\tMENU SELECCION DE VEHICULOS\n";
+  cout << "\t\t\t---------------------------\n\n";
+  cout << "\t\tVEHICULOS ASIGNADOS CORRECTAMENTE!\n\n";
   esperar();
 
-  carrera(carriles);
+  carrera(carriles, numeroCarriles);
 }
 
 /**
@@ -93,8 +102,8 @@ void menuSeleccionDeVehiculos(tCarrilesPtr carriles, int numeroCarriles)
     {
       system("cls");
       generarLogo();
-      cout << "\n\n\t\t\t MENU SELECCION DE VEHICULOS\n";
-      cout << "\t\t\t----------------------\n\n";
+      cout << "\n\n\t\t\tMENU SELECCION DE VEHICULOS\n";
+      cout << "\t\t\t---------------------------\n\n";
       listarNombres(listaNoAsignados);
       int vehiculosNoAsignados = contarNodos(listaNoAsignados);
       cout << "\n\tSeleccione un vehiculo a asignar al carril " << i << ": ";
@@ -112,10 +121,12 @@ void menuSeleccionDeVehiculos(tCarrilesPtr carriles, int numeroCarriles)
     tCarrilesPtr carrilAsignar = recorrerMultilistaHastaPosicion(carriles, i);        // busca el carril a asignarle el vehiculo seleccionado
     tVehiculoPtr carroAAsignar = obtenerNodoPorPosicion(listaNoAsignados, opcionInt); // busca el vehiculo a asignar
     carrilAsignar->vehiculoAsignado = crearNodoVehiculo(*carroAAsignar);
+    carrilAsignar->aba->simbolo = carrilAsignar->vehiculoAsignado->simbolo;
+
     eliminarNodoVehiculo(&listaNoAsignados, carroAAsignar);
   }
 
-  carrera(carriles);
+  carrera(carriles, numeroCarriles);
 }
 
 /**
@@ -201,7 +212,6 @@ int main()
   // creo la lista de vehiculos y la leo del archivo
   tVehiculoPtr listaVehiculos = NULL;
   leerListaDeArchivo(&listaVehiculos);
-
   menuJuego(listaVehiculos);
   return 0;
 }

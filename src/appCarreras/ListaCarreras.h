@@ -2,8 +2,12 @@
 #include <string>
 #include <cstdlib>
 #include <fstream>
-#include <fstream>
-#include "../appVehiculos/ListaVehiculos.h"
+#include <unistd.h>
+#include <conio.h>
+#include <iomanip>
+#include <time.h>
+#include <windows.h>
+#include "movimiento.h"
 
 using namespace std;
 
@@ -22,6 +26,7 @@ typedef struct tCarriles
   tVehiculoPtr vehiculoAsignado; // Puntero al vehículo asignado al carril
   struct tCarriles *prox;        // Puntero al siguiente nodo de la multilista
   struct tCarril *aba;           // Puntero al primer nodo de la lista de carriles
+  int tiempo;
 } tCarriles;
 typedef tCarriles *tCarrilesPtr;
 
@@ -147,4 +152,92 @@ tCarrilesPtr recorrerMultilistaHastaPosicion(tCarrilesPtr carriles, int posicion
   }
 
   return NULL; // La posición deseada no se encuentra en la lista
+}
+
+void imprimirCarriles(tCarrilesPtr carriles)
+{
+  tCarrilesPtr auxCarriles = carriles;
+  while (auxCarriles != NULL)
+  {
+    cout << setw(20) << auxCarriles->vehiculoAsignado->nombreEspanol;
+    tCarrilPtr auxCarril = auxCarriles->aba;
+    while (auxCarril != NULL)
+    {
+      cout << auxCarril->simbolo;
+      auxCarril = auxCarril->prox;
+    }
+    auxCarril = auxCarriles->aba;
+    cout << "\n\t";
+    while (auxCarril != NULL)
+    {
+      cout << "-";
+      auxCarril = auxCarril->prox;
+    }
+    cout << "\n";
+    auxCarriles = auxCarriles->prox;
+  }
+}
+
+void mostrarTablaTiempos(tCarrilesPtr lista)
+{
+  system("cls");
+  generarLogo();
+  cout << "\n\n\t\tTabla de tiempos" << endl;
+  cout << "\t\t----------------" << endl;
+  cout << "\t\tNombre" << setw(10) << "Tiempo" << endl;
+  cout << "\t\t----------------" << endl;
+  tCarrilesPtr aux = lista;
+  while (aux != nullptr)
+  {
+    cout << "\t\t" << aux->vehiculoAsignado->nombreEspanol << setw(10) << aux->tiempo << endl;
+    aux = aux->prox;
+  }
+  cout << "----------------" << endl;
+  esperar();
+}
+
+void recorrerCarriles(tCarrilesPtr carriles)
+{
+  int y = 16;
+  tCarrilesPtr auxCarriles = carriles;
+  while (auxCarriles != NULL)
+  {
+    auxCarriles->tiempo = tiempo(auxCarriles->vehiculoAsignado, y);
+    auxCarriles = auxCarriles->prox;
+    y += 2;
+  }
+  mostrarTablaTiempos(carriles);
+}
+
+/**
+ * Verifica si la carrera ha terminado, es decir, si todos los carriles han alcanzado el final.
+ *
+ * @param carriles Puntero al primer nodo de la multilista de carriles.
+ * @return Verdadero si la carrera ha terminado, falso en caso contrario.
+ */
+bool terminoCarrera(tCarrilesPtr carriles)
+{
+  tCarrilesPtr auxCarriles = carriles;
+
+  // Iterar sobre todos los carriles en la multilista
+  while (auxCarriles != NULL)
+  {
+    tCarrilPtr auxCarril = auxCarriles->aba;
+
+    // Avanzar hasta la posición 80 en el carril
+    while (auxCarril->prox != NULL)
+    {
+      auxCarril = auxCarril->prox;
+    }
+
+    // Verificar si el símbolo en la posición final es un espacio en blanco
+    if (auxCarril->simbolo == ' ')
+    {
+      return false; // La carrera no ha terminado, al menos un carril no ha alcanzado el final
+    }
+
+    auxCarriles = auxCarriles->prox;
+  }
+
+  return true; // Todos los carriles han alcanzado el final, la carrera ha terminado
 }
