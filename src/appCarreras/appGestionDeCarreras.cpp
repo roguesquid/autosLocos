@@ -81,8 +81,10 @@ bool verificarOpcionVehiculoSeleccionado(string opcion, int vehiculosNoAsignados
  * @param listaVehiculos Puntero al primer nodo de la lista de vehículos.
  * @param numeroCarriles El número total de carriles.
  */
-void menuSeleccionDeVehiculos(tCarrilesPtr carriles, tVehiculoPtr listaVehiculos, int numeroCarriles)
+void menuSeleccionDeVehiculos(tCarrilesPtr carriles, int numeroCarriles)
 {
+  tVehiculoPtr listaNoAsignados = NULL;
+  leerListaDeArchivo(&listaNoAsignados);
   for (int i = 1; i <= numeroCarriles; i++)
   {
     bool repetir = true;
@@ -93,7 +95,8 @@ void menuSeleccionDeVehiculos(tCarrilesPtr carriles, tVehiculoPtr listaVehiculos
       generarLogo();
       cout << "\n\n\t\t\t MENU SELECCION DE VEHICULOS\n";
       cout << "\t\t\t----------------------\n\n";
-      int vehiculosNoAsignados = listarVehiculosNoAsignados(carriles, listaVehiculos);
+      listarNombres(listaNoAsignados);
+      int vehiculosNoAsignados = contarNodos(listaNoAsignados);
       cout << "\n\tSeleccione un vehiculo a asignar al carril " << i << ": ";
       cin >> opcion;
 
@@ -105,9 +108,11 @@ void menuSeleccionDeVehiculos(tCarrilesPtr carriles, tVehiculoPtr listaVehiculos
       cout << "\n\n\tOpcion invalida, ingresela nuevamente";
       esperar();
     }
-    int opcionInt = stoi(opcion);                                              // convierte el
-    tCarrilesPtr carrilAsignar = recorrerMultilistaHastaPosicion(carriles, i); // busca el carril a asignarle el vehiculo seleccionado
-    carrilAsignar->vehiculoAsignado = buscarVehiculoNoAsignadoPorPosicion(listaVehiculos, opcionInt, carriles);
+    int opcionInt = stoi(opcion);                                                     // convierte el
+    tCarrilesPtr carrilAsignar = recorrerMultilistaHastaPosicion(carriles, i);        // busca el carril a asignarle el vehiculo seleccionado
+    tVehiculoPtr carroAAsignar = obtenerNodoPorPosicion(listaNoAsignados, opcionInt); // busca el vehiculo a asignar
+    carrilAsignar->vehiculoAsignado = crearNodoVehiculo(*carroAAsignar);
+    eliminarNodoVehiculo(&listaNoAsignados, carroAAsignar);
   }
 
   carrera(carriles);
@@ -115,10 +120,9 @@ void menuSeleccionDeVehiculos(tCarrilesPtr carriles, tVehiculoPtr listaVehiculos
 
 /**
  * Menu que permite seleccionar si los carriles seran aleatorios o el usuario podra elegir en que carril ira cada uno.
- * @param listaVehiculos Puntero a la lista de vehículos.
  * @param numeroCarriles Numero de carriles que tendra la carrera.
  */
-void menuOpcionesCarrera(tVehiculoPtr listaVehiculos, int numeroCarriles)
+void menuOpcionesCarrera(int numeroCarriles)
 {
   // repetir hasta que tenga un numero valido
   bool repetir = true;
@@ -147,7 +151,7 @@ void menuOpcionesCarrera(tVehiculoPtr listaVehiculos, int numeroCarriles)
   }
   else if (opcion == "2")
   {
-    menuSeleccionDeVehiculos(carriles, listaVehiculos, numeroCarriles);
+    menuSeleccionDeVehiculos(carriles, numeroCarriles);
   }
 }
 
@@ -189,7 +193,7 @@ void menuJuego(tVehiculoPtr listaVehiculos)
     }
   }
 
-  menuOpcionesCarrera(listaVehiculos, numeroCarriles);
+  menuOpcionesCarrera(numeroCarriles);
 }
 
 int main()
