@@ -98,7 +98,7 @@ bool existeSimbolo(tVehiculoPtr lista, char simbolo)
  */
 char generarSimboloAleatorio(tVehiculoPtr lista)
 {
-  const string simbolos = "#$%&*ºª@?!*^£☺☻♥♦♣•◘○◙♪♫☼►◄§▬▲▼%&"; // Lista de símbolos disponibles (34, pero maximo puedo usar 30 de ellos)
+  const string simbolos = "#$%&*@?*^£☺☻♥♦♣•◘○◙♪♫☼►◄▬▲▼"; // Lista de símbolos disponibles (34, pero maximo puedo usar 30 de ellos)
   char simbolo;
 
   do
@@ -317,29 +317,171 @@ int velocidad(tVehiculoPtr vehiculo)
     {
       if (vehiculo->tipoCaucho == "todo terreno 1")
       {
-        return 30;
+        return 26;
       }
       else if (vehiculo->tipoCaucho == "todo terreno 2")
       {
-        return 33;
+        return 30;
       }
       else if (vehiculo->tipoCaucho == "todo terreno 3")
       {
-        return 35;
+        return 33;
       }
       else if (vehiculo->tipoCaucho == "todo terreno 4")
       {
-        return 37;
+        return 36;
       }
       else if (vehiculo->tipoCaucho == "todo terreno 5")
       {
-        return 40;
+        return 45;
       }
     }
     else
     {
-      return 25;
+      return 30;
     }
+  }
+  else if (vehiculo->velocidad == "crucero")
+  {
+    return 26;
+  }
+  else if (vehiculo->velocidad == "el super ferrari")
+  {
+    return 23;
+  }
+  else if (vehiculo->velocidad == "delorean")
+  {
+    return 20;
+  }
+}
+
+int bomba(tVehiculoPtr vehiculo)
+{
+  if (vehiculo->velocidad == "perezoso")
+  {
+    if (vehiculo->tamanoDelCaucho == "monstertruck")
+    {
+      if (vehiculo->tipoCaucho == "todo terreno 1")
+      {
+        return 15;
+      }
+      else if (vehiculo->tipoCaucho == "todo terreno 2")
+      {
+        return 12;
+      }
+      else if (vehiculo->tipoCaucho == "todo terreno 3")
+      {
+        return 10;
+      }
+      else if (vehiculo->tipoCaucho == "todo terreno 4")
+      {
+        return 7;
+      }
+      else if (vehiculo->tipoCaucho == "todo terreno 5")
+      {
+        return 5;
+      }
+    }
+    else
+    {
+      return 15;
+    }
+  }
+  else if (vehiculo->velocidad == "crucero")
+  {
+    return 20;
+  }
+  else if (vehiculo->velocidad == "el super ferrari")
+  {
+    return 25;
+  }
+  else if (vehiculo->velocidad == "delorean")
+  {
+    return 35;
+  }
+}
+
+int piedra(tVehiculoPtr vehiculo)
+{
+  if (vehiculo->velocidad == "perezoso")
+  {
+    if (vehiculo->tamanoDelCaucho == "monstertruck")
+    {
+      if (vehiculo->tipoCaucho == "todo terreno 1")
+      {
+        return 20;
+      }
+      else if (vehiculo->tipoCaucho == "todo terreno 2")
+      {
+        return 17;
+      }
+      else if (vehiculo->tipoCaucho == "todo terreno 3")
+      {
+        return 15;
+      }
+      else if (vehiculo->tipoCaucho == "todo terreno 4")
+      {
+        return 10;
+      }
+      else if (vehiculo->tipoCaucho == "todo terreno 5")
+      {
+        return 5;
+      }
+    }
+    else
+    {
+      return 20;
+    }
+  }
+  else if (vehiculo->velocidad == "crucero")
+  {
+    return 25;
+  }
+  else if (vehiculo->velocidad == "el super ferrari")
+  {
+    return 30;
+  }
+  else if (vehiculo->velocidad == "delorean")
+  {
+    return 40;
+  }
+}
+
+int liquido(tVehiculoPtr vehiculo)
+{
+  if (vehiculo->velocidad == "perezoso")
+  {
+    if (vehiculo->tamanoDelCaucho == "monstertruck")
+    {
+      if (vehiculo->tipoCaucho == "todo terreno 1")
+      {
+        return 30;
+      }
+      else if (vehiculo->tipoCaucho == "todo terreno 2")
+      {
+        return 25;
+      }
+      else if (vehiculo->tipoCaucho == "todo terreno 3")
+      {
+        return 20;
+      }
+      else if (vehiculo->tipoCaucho == "todo terreno 4")
+      {
+        return 15;
+      }
+      else if (vehiculo->tipoCaucho == "todo terreno 5")
+      {
+        return 10;
+      }
+    }
+    else
+    {
+      return 30;
+    }
+  }
+  else if (vehiculo->velocidad == "crucero")
+  {
+    return 35;
   }
   else if (vehiculo->velocidad == "el super ferrari")
   {
@@ -347,7 +489,7 @@ int velocidad(tVehiculoPtr vehiculo)
   }
   else if (vehiculo->velocidad == "delorean")
   {
-    return 18;
+    return 15;
   }
 }
 

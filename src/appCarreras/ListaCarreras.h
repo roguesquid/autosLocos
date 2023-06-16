@@ -38,7 +38,7 @@ typedef tCarriles *tCarrilesPtr;
  */
 char generarObstaculoAleatorio()
 {
-  string obstaculos = "¤¶≠";
+  string obstaculos = "bpl";
   return obstaculos[rand() % obstaculos.length()];
 }
 
@@ -196,13 +196,55 @@ void mostrarTablaTiempos(tCarrilesPtr lista)
   esperar();
 }
 
+int tipoObstaculo(tCarrilPtr carril)
+{
+  int i;
+  tCarrilPtr auxCarril = carril;
+
+  while (auxCarril != NULL)
+  {
+    if (auxCarril->simbolo != 'b')
+    {
+      return 1;
+    }
+    else if (auxCarril->simbolo != 'p')
+    {
+      return 2;
+    }
+    else if (auxCarril->simbolo != 'l')
+    {
+      return 3;
+    }
+    auxCarril = auxCarril->prox;
+    i++;
+  }
+}
+
+int posicionObstaculo(tCarrilPtr carril)
+{
+  int i = 1;
+  tCarrilPtr auxCarril = carril;
+
+  while (auxCarril != NULL)
+  {
+    if ((auxCarril->simbolo == 'b') || (auxCarril->simbolo == 'p') || (auxCarril->simbolo == 'l'))
+    {
+      return i;
+    }
+    auxCarril = auxCarril->prox;
+    i++;
+  }
+}
+
 void recorrerCarriles(tCarrilesPtr carriles)
 {
   int y = 16;
   tCarrilesPtr auxCarriles = carriles;
   while (auxCarriles != NULL)
   {
-    auxCarriles->tiempo = tiempo(auxCarriles->vehiculoAsignado, y);
+    int obstaculo = posicionObstaculo(auxCarriles->aba);
+    int tipoDeObstaculo = tipoObstaculo(auxCarriles->aba);
+    auxCarriles->tiempo = tiempo(auxCarriles->vehiculoAsignado, y, obstaculo, tipoDeObstaculo);
     auxCarriles = auxCarriles->prox;
     y += 2;
   }
